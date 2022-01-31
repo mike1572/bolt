@@ -1,5 +1,5 @@
 
-import React, {Fragment} from 'react'
+import React, {Fragment, useState} from 'react'
 import {Link} from 'react-router-dom'
 
 //MUI
@@ -12,6 +12,10 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Fade from '@mui/material/Fade';
+import Snackbar from '@mui/material/Snackbar';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { makeStyles } from '@mui/styles';
 
@@ -28,11 +32,39 @@ const useStyles = makeStyles({
 let WelcomePage = (props) => {
 
     const classes = useStyles()
+    const [open, setOpen] = useState(true)
+
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+    };
+
+    const action = (
+        <Fragment>
+          <Button variant="outlined" color="secondary" size="small" onClick={handleClose} sx={{mb: 1, mt: 1, mr: 1}}>
+            CONTINUE
+          </Button>
+        </Fragment>
+      );
 
     return (
 
         <Fragment>
 
+            <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                sx={{ textAlign: 'justify',width: {xs: '80%', sm: 130}, bgcolor: 'primary'}}
+                anchorOrigin={{ vertical: 'bottom', horizontal:'right' }}
+                onClose={handleClose}
+                message="We use cookies to give you the best experience possible. By continuing, you consent to their use for optimal performance"
+                action={action}
+            />
+           
             <div className='videoText'>
                 <div className='videoHolder'>
                     <video autoPlay muted loop style={{height: '100%', width: '100%', objectFit: 'cover', zIndex: '2'}}>

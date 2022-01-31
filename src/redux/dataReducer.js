@@ -1,11 +1,15 @@
 
 import {
-    SET_AUTHENTICATED
+    SET_AUTHENTICATED,
+    SET_TYPE,
+    SET_USER
 } from './types';
 
 
 const initialState = {
-    authenticated: false
+    authenticated: false,
+    type: null, 
+    user: {}
 }
 
 
@@ -15,6 +19,18 @@ export default function(state = initialState, action) {
             return {
                 ...state, 
                 authenticated: action.payload
+            }
+        }
+        case SET_USER: {
+            return {
+                ...state, 
+                user: action.payload
+            }
+        }
+        case SET_TYPE: {
+            return {
+                ...state, 
+                type: action.payload
             }
         }
         default: 

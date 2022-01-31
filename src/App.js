@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 //Redux
@@ -14,8 +14,7 @@ import createTheme from '@mui/material/styles/createTheme';
 import responsiveFontSizes from '@mui/material/styles/responsiveFontSizes'
 import Brightness6Icon from '@mui/icons-material/Brightness6';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
-import { IconButton } from '@mui/material';
-
+import Button from '@mui/material/Button'
 
 //Pages
 import WelcomePage from './pages/WelcomePage';
@@ -23,6 +22,9 @@ import Login from './pages/Login';
 import SignupEntrepreneur from './pages/SignupEntrepreneur';
 import SignupInvestor from './pages/SignupInvestor';
 import Header from './components/Header'
+
+import DashboardEntrepreneur from './pages/DashboardEntrepreneur';
+import DashboardInvestor from './pages/DashboardInvestor';
 
 export const light = {
   palette: {
@@ -75,18 +77,35 @@ function App() {
   let appliedTheme = createTheme(theme ? light : dark);
   appliedTheme = responsiveFontSizes(appliedTheme)
 
+  useEffect(() => {
+    let style = localStorage.getItem("StylePreference");
+    if (style !== null){
+      if (style === "true"){
+        setTheme(true)
+      } else{
+        setTheme(false)
+      }
+    } else {
+      setTheme(true)
+    }
+  }, [])
+
+  let handleChange = () => {
+    setTheme(!theme)
+    localStorage.setItem('StylePreference', !theme)
+  }
+
   return (
     <ThemeProvider theme={appliedTheme}>
       <Provider store={store}>
         <Router>
-          <IconButton
-              style={{position: 'absolute', right: '0', top: '0', width: '50px', height: '50px', alignItems: 'center'}}
-              onClick={() => setTheme(!theme)}
-              sx={{mt: 0.4, mr: 0.6}}
-              color="secondary"
-            >
-            {icon}
-          </IconButton>
+          <Button 
+            style={{borderRadius: 50, position: 'absolute', right: '0', top: '0', zIndex: 10, width: '50px', height: '50px', alignItems: 'center' }}
+            onClick={handleChange}
+            sx={{mt: 0.4, mr: 0.6}}
+            color="secondary">
+              {icon}
+          </Button>
           <Header/>
           <Routes>
 

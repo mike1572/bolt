@@ -4,6 +4,13 @@ import React, {Fragment, useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import {db, auth} from '../firebaseConfig';
 import {signInWithEmailAndPassword} from 'firebase/auth'
+import {getDoc, doc} from 'firebase/firestore'
+
+import PropTypes from 'prop-types';
+
+// Redux
+import {connect} from 'react-redux';
+import {loginUser} from "../redux/dataActions";
 
 //MUI
 import Typography from '@mui/material/Typography'
@@ -63,21 +70,48 @@ let Login = (props) => {
         }
 
         if (Object.keys(errors.get()).length === 0){
+            let userId;
             signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
+                userId = user.uid;
                 console.log(user.uid)
                 return user.getIdToken()
             })
             .then((idToken) => {
-                console.log(idToken)
-                const FBIdToken = `Bearer ${idToken}`
-                localStorage.setItem('FBIdToken', FBIdToken)
-                setLoading(false)
-                setEmail('')
-                setPassword('')
-                errors.set({})
+            
+                const docRef = doc(db, "users", userId);
+                getDoc(docRef)
+                .then((doc) => {
+
+                    if (doc.exists()) {
+                        let data =  doc.data()
+                        console.log(data)
+
+                        props.loginUser(data)
+                        setLoading(false)
+                        setEmail('')
+                        setPassword('')
+                        errors.set({})
+
+                        const FBIdToken = `Bearer ${idToken}`
+                        localStorage.setItem('FBIdToken', FBIdToken)        
+                    } else {
+                        // doc.data() will be undefined in this case
+                        console.log("No such document!");
+                        setLoading(false)
+                        setEmail('')
+                        setPassword('')
+                        errors.set({...errors.get(), general: "Something went wrong, please try again"})
+                    }
+        
+                })
+
+
+             
+
+
                 
             })
             .catch((err) => {
@@ -94,9 +128,11 @@ let Login = (props) => {
                     errors.set({...errors.get(), general: "Something went wrong, please try again"})
                 }
             });
+        } else {
+            setLoading(false)
         }
 
-        setLoading(false)
+        
     }
 
     let handleChange = (event) => {
@@ -198,4 +234,17 @@ let Login = (props) => {
     )
 }
 
-export default Login;
+Login.propTypes = {
+    data: PropTypes.object.isRequired,
+    loginUser: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = (state) => ({
+    data: state.data
+})
+
+const mapActionsToProps = {
+    loginUser
+}
+
+export default connect(mapStateToProps, mapActionsToProps) (Login);

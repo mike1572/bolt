@@ -124,7 +124,10 @@ let SignupEntrepreneur = (props) => {
                 }
 
                 setLoading(false)
-            });     
+            });   
+
+        } else {
+            setLoading(false)
         }
 
     }

@@ -10,11 +10,10 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined'
 import TextField from '@mui/material/TextField'
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -133,6 +132,8 @@ let SignupInvestor = (props) => {
 
                 setLoading(false)
             });     
+        } else {
+            setLoading(false)
         }
 
     }
@@ -179,7 +180,7 @@ let SignupInvestor = (props) => {
                     }}
                 >
                     <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-                        <LockOutlinedIcon />
+                        <LockOpenOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5" color='inherit'>
                         Sign up as an Investor
