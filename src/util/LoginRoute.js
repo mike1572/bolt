@@ -12,11 +12,11 @@ let LoginRoute = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    authenticated: state.user.authenticated
+    authenticated: state.data.authenticated
 })
 
 LoginRoute.propTypes = {
-    user: PropTypes.object
+    data: PropTypes.object
 }
 
 export default connect(mapStateToProps)(LoginRoute);

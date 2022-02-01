@@ -8,11 +8,24 @@ import PropTypes from 'prop-types';
 
 let AuthRoute = (props) => {
     const authenticated = props.authenticated
-    return authenticated ? <Navigate to='/home'/> : <Outlet/>   
+    const type = props.type;
+
+    if (authenticated) {
+        if (type === 'entrepreneur'){
+            return <Navigate to='/home'/>
+        } else if (type === 'investor') {
+            return <Navigate to='/dashboard'/>
+        } else {
+            return <Outlet/>
+        }
+    } else {
+        return <Outlet/>
+    }
 }
 
 const mapStateToProps = (state) => ({
-    authenticated: state.data.authenticated
+    authenticated: state.data.authenticated,
+    type: state.data.type
 })
 
 AuthRoute.propTypes = {

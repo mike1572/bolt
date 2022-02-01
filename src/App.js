@@ -3,10 +3,12 @@ import './App.css';
 
 import React, {useState, useEffect} from 'react'
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
 //Redux
 import {Provider} from 'react-redux';
 import store from './redux/store';
+import { logoutUser, getUserData } from './redux/dataActions';
 
 // MUI
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
@@ -25,6 +27,11 @@ import Header from './components/Header'
 
 import DashboardEntrepreneur from './pages/DashboardEntrepreneur';
 import DashboardInvestor from './pages/DashboardInvestor';
+
+
+import AuthRoute from './util/AuthRoute';
+import LoginRoute from './util/LoginRoute';
+import ErrorRoute from './util/ErrorRoute';
 
 export const light = {
   palette: {
@@ -69,6 +76,19 @@ export const dark = {
 
 }
 
+const token = localStorage.FBIdToken;
+
+if (token) {
+  const decodedToken = jwtDecode(token)
+  if (decodedToken.exp * 1000 < Date.now()){
+    store.dispatch(logoutUser())
+    window.location.href='/login'
+  } else {
+    // store.dispatch({ type: SET_AUTHENTICATED, payload: true })
+    // axios.defaults.headers.common['Authorization'] = token;
+    store.dispatch(getUserData())
+  }
+}
 
 
 function App() {
@@ -109,10 +129,28 @@ function App() {
           <Header/>
           <Routes>
 
-            <Route exact path="/" element={<WelcomePage/>} /> 
-            <Route exact path="/login" element={<Login/>} /> 
-            <Route exact path="/entrepreneur" element={<SignupEntrepreneur/>} /> 
-            <Route exact path="/investor" element={<SignupInvestor/>} /> 
+            <Route element={<AuthRoute/>}>
+
+              <Route exact path="/" element={<WelcomePage/>} /> 
+              <Route exact path="/login" element={<Login/>} /> 
+              <Route exact path="/entrepreneur" element={<SignupEntrepreneur/>} /> 
+              <Route exact path="/investor" element={<SignupInvestor/>} /> 
+
+            </Route>
+
+            <Route element={<LoginRoute/>}>
+
+              {/* {Entrepreneur} */}
+              <Route exact path="/home" element={<DashboardEntrepreneur/>} />
+
+              {/* {Investor} */}
+              <Route exact path="/dashboard" element={<DashboardInvestor/>} />
+
+              
+            </Route>
+
+            <Route path='*' element={<ErrorRoute/>} />
+
 
           </Routes>
         </Router>

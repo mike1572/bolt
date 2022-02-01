@@ -169,7 +169,7 @@ let SignupInvestor = (props) => {
                     borderBottom: 'solid black 1px' 
                 }}
             />
-            <Grid item xs={12} sm={7} md={5} component={Paper} elevation={6}  sx={{bgcolor: 'primary' }}>
+            <Grid item xs={12} sm={7} md={5} component={Paper} elevation={6}  >
                 <Box
                     sx={{
                     my: 8,
@@ -187,6 +187,7 @@ let SignupInvestor = (props) => {
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate  sx={{ mt: 1 }}>
                     <TextField
+                    
                             margin="normal"
                             required
                             fullWidth

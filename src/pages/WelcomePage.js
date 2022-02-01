@@ -1,5 +1,5 @@
 
-import React, {Fragment, useState} from 'react'
+import React, {Fragment, useRef, useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 
 //MUI
@@ -16,6 +16,9 @@ import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import SpeedDial from '@mui/material/SpeedDial';
+import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 
 import { makeStyles } from '@mui/styles';
 
@@ -29,8 +32,33 @@ const useStyles = makeStyles({
     }
 })
 
+// Hook
+let useWindowSize = () => {
+    const [windowSize, setWindowSize] = useState({
+      width: undefined,
+      height: undefined,
+    });
+    useEffect(() => {
+      function handleResize() {
+        setWindowSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }
+      window.addEventListener("resize", handleResize);
+      handleResize();
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+    return windowSize;
+}
+
+
+
 let WelcomePage = (props) => {
 
+    const size = useWindowSize()
+
+    let emptyRef = useRef()
     const classes = useStyles()
     const [open, setOpen] = useState(true)
 
@@ -39,9 +67,16 @@ let WelcomePage = (props) => {
         if (reason === 'clickaway') {
           return;
         }
-    
         setOpen(false);
     };
+
+    let handleTop = () => {
+        emptyRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "start"
+        });
+    }
 
     const action = (
         <Fragment>
@@ -49,12 +84,24 @@ let WelcomePage = (props) => {
             CONTINUE
           </Button>
         </Fragment>
-      );
+    );
 
     return (
 
         <Fragment>
 
+            {
+                size.width < 600 ? (
+                    <Button       
+                        sx={{pt: 2,pb: 2,  position: 'fixed', bottom: 10, right: 10, borderRadius: 50, zIndex: 50}}
+                        onClick={handleTop}
+                        variant="contained"
+                    ><KeyboardArrowUpRoundedIcon fontSize='large'  /></Button>
+                ): (
+                    <Fragment></Fragment>
+                )
+            }
+   
             <Snackbar
                 open={open}
                 autoHideDuration={6000}
@@ -65,13 +112,12 @@ let WelcomePage = (props) => {
                 action={action}
             />
            
+            <div ref={emptyRef} style={{position: 'absolute', top: 0}}></div>
             <div className='videoText'>
                 <div className='videoHolder'>
                     <video autoPlay muted loop style={{height: '100%', width: '100%', objectFit: 'cover', zIndex: '2'}}>
                         <source src={Tower} type="video/mp4"/>
                     </video>
-
-            
                 </div>
                 <Typography style={{position: 'absolute', zIndex: '5', color: 'white', left: '0', right: '0', margin: 'auto 15%', marginTop: '170px'}} variant="h3">
                     Helping your future startup succeed

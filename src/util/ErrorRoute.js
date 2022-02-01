@@ -2,14 +2,19 @@
 import React from "react";
 
 import { Link } from 'react-router-dom';
+import Grid from '@mui/material/Grid';
 
 const ErrorRoute = () => (
-  <div className="notFound">
-    <h1>404 - Not Found!</h1>
-        <Link to="/" className="goHome">
-            Go Home
-        </Link>
-  </div>
+
+    <Grid container>
+        <Grid item xs={12} sx={{textAlign: 'center', mt: 3}}>
+            <h1>404 - Not Found!</h1>
+            <Link to="/" className="goHome">
+                <h3>Go Home</h3>
+            </Link>
+        </Grid>
+    </Grid>
+
 );
 
 

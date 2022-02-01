@@ -160,7 +160,7 @@ let Login = (props) => {
                     borderBottom: 'solid black 1px' 
                 }}
             />
-            <Grid item xs={12} sm={7} md={5} component={Paper} elevation={6}  sx={{bgcolor: 'primary' }}>
+            <Grid item xs={12} sm={7} md={5} component={Paper} elevation={6} >
                 <Box
                     sx={{
                     my: 8,
