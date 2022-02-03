@@ -23,6 +23,11 @@ let AuthRoute = (props) => {
     }
 }
 
+// let AuthRoute = (props) => {
+//     const authenticated = props.authenticated
+//     return authenticated ? <Navigate to='/home'/> : <Outlet/>   
+// }
+
 const mapStateToProps = (state) => ({
     authenticated: state.data.authenticated,
     type: state.data.type

@@ -16,10 +16,17 @@ import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import PersonIcon from '@mui/icons-material/Person';
+import ChatIcon from '@mui/icons-material/Chat';
+import ReviewsIcon from '@mui/icons-material/Reviews';
 
 //Redux
 import {connect} from 'react-redux'
 import {logoutUser} from '../redux/dataActions'
+
+import Lynked from '../images/lynked.png'
+
 
 // Hook
 let useWindowSize = () => {
@@ -61,8 +68,11 @@ let Header = (props) => {
       navbar = (
         <Fragment>
 
-          <Button color="inherit" component={Link} to='/home'>{size.width < 520 ? <Tooltip title="Home"><HomeIcon/></Tooltip> : "Home"}</Button>
-          <Button color="inherit" onClick={handleLogout} >{size.width < 520 ? <Tooltip title="Logout"><LogoutIcon/></Tooltip> : "Logout"}</Button>
+          <Button color="inherit" component={Link} to='/home'>{size.width < 555 ? <Tooltip title="Home"><HomeIcon/></Tooltip> : "Home"}</Button>
+          <Button color="inherit" component={Link} to='/social'>{size.width < 555 ? <Tooltip title="Social"><ChatIcon/></Tooltip> : "Social"}</Button>
+          <Button color="inherit" component={Link} to='/profile/entrepreneur'>{size.width < 555 ? <Tooltip title="Profile"><PersonIcon/></Tooltip> : "Profile"}</Button>
+          <Button color="inherit" component={Link} to='/resources'>{size.width < 555 ? <Tooltip title="Resources"><MenuBookIcon/></Tooltip> : "Resources"}</Button>
+          <Button color="inherit" onClick={handleLogout} >{size.width < 555 ? <Tooltip title="Logout"><LogoutIcon/></Tooltip> : "Logout"}</Button>
 
           
         </Fragment>
@@ -71,8 +81,11 @@ let Header = (props) => {
       navbar = (
         <Fragment>
 
-          <Button color="inherit" component={Link} to='/dashboard'>{size.width < 520 ? <Tooltip title="Home"><HomeIcon/></Tooltip> : "Home"}</Button>
-          <Button color="inherit" onClick={handleLogout} >{size.width < 5020 ? <Tooltip title="Logout"><LogoutIcon/></Tooltip> : "Logout"}</Button>
+          <Button color="inherit" component={Link} to='/dashboard'>{size.width < 620 ? <Tooltip title="Home"><HomeIcon/></Tooltip> : "Home"}</Button>
+          <Button color="inherit" component={Link} to='/messages'>{size.width < 620 ? <Tooltip title="Social"><ChatIcon/></Tooltip> : "Social"}</Button>
+          <Button color="inherit" component={Link} to='/profile/investor'>{size.width < 620 ? <Tooltip title="Profile"><PersonIcon/></Tooltip> : "Profile"}</Button>
+          <Button color="inherit" component={Link} to='/recommendations'>{size.width < 620 ? <Tooltip title="Recommendations"><ReviewsIcon/></Tooltip> : "Recommendations"}</Button>
+          <Button color="inherit" onClick={handleLogout} >{size.width < 620 ? <Tooltip title="Logout"><LogoutIcon/></Tooltip> : "Logout"}</Button>
 
         </Fragment>
       )
@@ -97,7 +110,7 @@ let Header = (props) => {
     <AppBar position="static">
       <Container>
         <Toolbar disableGutters sx={{alignItems: 'center', justifyContent: 'center'}}>
-        
+   
           {navbar}
             
         </Toolbar>

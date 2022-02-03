@@ -28,14 +28,33 @@ import Header from './components/Header'
 import DashboardEntrepreneur from './pages/DashboardEntrepreneur';
 import DashboardInvestor from './pages/DashboardInvestor';
 
+// Entrepreneur 
+import Ressources from './pages/entrepreneur/Ressources'
+import EntrepreneurProfile from './pages/entrepreneur/EntrepreneurProfile'
+import SocialEntrepreneur from './pages/entrepreneur/SocialEntrepreneur'
+
+
+// Investor
+import InvestorProfile from './pages/investor/InvestorProfile'
+
+
+
 
 import AuthRoute from './util/AuthRoute';
 import LoginRoute from './util/LoginRoute';
 import ErrorRoute from './util/ErrorRoute';
 
+import Lynked from './images/lynked.png'
+
 export const light = {
   palette: {
     type: 'light',
+    third: {
+      main: "#ffffff"
+    },
+    success: {
+      main: "#ba000d",
+    },
     warning: {
       main: "#ffffff",
       contrastText: '#ffffff'
@@ -57,8 +76,14 @@ export const light = {
 export const dark = {
   palette: {
     type: 'dark',
-    warning: {
+    third: {
       main: "#000000"
+    },
+    warning: {
+      main: "#ffeb3b"
+    },
+    success: {
+      main: "#62727b",
     },
     primary: {
       main: '#263238',
@@ -119,10 +144,19 @@ function App() {
     <ThemeProvider theme={appliedTheme}>
       <Provider store={store}>
         <Router>
+          <img src={Lynked} alt="logo" style={{
+            left: 13,
+            top: 21,
+            width: 60,  
+            height: 20,
+            zIndex: '200',
+            position: 'absolute',
+            display: window.innerWidth > 385 ? 'block' : 'none' 
+           }} /> 
           <Button 
             style={{borderRadius: 50, position: 'absolute', right: '0', top: '0', zIndex: 10, width: '50px', height: '50px', alignItems: 'center' }}
             onClick={handleChange}
-            sx={{mt: 0.4, mr: 0.6}}
+            sx={{mt: 0.4, mr: -1}}
             color="secondary">
               {icon}
           </Button>
@@ -142,11 +176,14 @@ function App() {
 
               {/* {Entrepreneur} */}
               <Route exact path="/home" element={<DashboardEntrepreneur/>} />
-
+              <Route exact path="/resources" element={<Ressources/>} />
+              <Route exact path="/profile/entrepreneur" element={<EntrepreneurProfile/>} />
+              <Route exact path="/social" element={<SocialEntrepreneur/>} />
+              
               {/* {Investor} */}
               <Route exact path="/dashboard" element={<DashboardInvestor/>} />
+              <Route exact path="/profile/investor" element={<InvestorProfile/>} />
 
-              
             </Route>
 
             <Route path='*' element={<ErrorRoute/>} />

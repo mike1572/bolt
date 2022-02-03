@@ -8,8 +8,9 @@ const initialState = {};
 const middleware = [thunk];
 
 const reducers = combineReducers({
-    data: dataReducer, 
+    data: dataReducer
 })
+
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

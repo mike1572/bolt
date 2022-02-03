@@ -95,7 +95,7 @@ let SignupInvestor = (props) => {
             .then((idToken) => {
 
                 setDoc(doc(db, "users", id), {
-                    emai: email, 
+                    email: email, 
                     fullName, fullName, 
                     company: company,
                     type: 'investor',

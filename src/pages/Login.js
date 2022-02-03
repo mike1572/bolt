@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 // Redux
 import {connect} from 'react-redux';
-import {loginUser} from "../redux/dataActions";
+import {loginUser, setBusinesses} from "../redux/dataActions";
 
 //MUI
 import Typography from '@mui/material/Typography'
@@ -89,7 +89,10 @@ let Login = (props) => {
                         let data =  doc.data()
                         console.log(data)
 
-                        props.loginUser(data)
+
+                        props.setBusinesses(data.businesses, data.type)
+                        
+                        props.loginUser(data, userId)
                         setLoading(false)
                         setEmail('')
                         setPassword('')
@@ -237,6 +240,7 @@ let Login = (props) => {
 Login.propTypes = {
     data: PropTypes.object.isRequired,
     loginUser: PropTypes.func.isRequired,
+    setBusinesses: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -244,7 +248,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionsToProps = {
-    loginUser
+    loginUser, 
+    setBusinesses
 }
 
 export default connect(mapStateToProps, mapActionsToProps) (Login);

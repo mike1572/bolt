@@ -12,6 +12,7 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Fade from '@mui/material/Fade';
+import Paper from '@mui/material/Paper'
 import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
@@ -25,6 +26,7 @@ import { makeStyles } from '@mui/styles';
 import Tower from '../images/Tower.mp4'
 import Startup from '../images/startup.jpg'
 import Laptop from '../images/laptop.jpg'
+import Lynked from '../images/lynked.png'
 
 const useStyles = makeStyles({
     color: {
@@ -119,8 +121,21 @@ let WelcomePage = (props) => {
                         <source src={Tower} type="video/mp4"/>
                     </video>
                 </div>
-                <Typography style={{position: 'absolute', zIndex: '5', color: 'white', left: '0', right: '0', margin: 'auto 15%', marginTop: '170px'}} variant="h3">
-                    Helping your future startup succeed
+                
+               
+                <img src={Lynked} alt="logo" style={{
+                    width: 280,  
+                    left: '0', 
+                    right: '0',
+                    margin: 'auto', 
+                    marginTop: '130px',
+                    maxWidth: '100%',
+                    zIndex: '100',
+                    position: 'absolute'
+                }} />   
+            
+                <Typography style={{position: 'absolute', zIndex: '5', color: 'white', left: '0', right: '0', margin: 'auto 15%', marginTop: '270px'}} variant="h3">
+                    Helping your startup succeed
                 </Typography>
             </div>
 
@@ -133,7 +148,7 @@ let WelcomePage = (props) => {
                 <Grid item xs={12} sx={{mb: 10, pt: 10, pb: 15, width: '100%', mx: 0, backgroundColor: 'primary.main'}}>
                    
                     <Typography variant='h4' color="white" sx={{textAlign: 'center'}}>
-                        AppName
+                        Who are we?
                     </Typography>
                    
                     <br/>
@@ -193,19 +208,27 @@ let WelcomePage = (props) => {
       
 
             
-                <Grid item xs={12} sx={{mt: 10, mb: 10, pt: 10, pb: 15, width: '100%', mx: 0, backgroundColor: 'primary.main'}}>
+                <Grid item xs={12} sx={{mt: 10, mb: 3, pt: 10, pb: 15, width: '100%', mx: 0, backgroundColor: 'primary.main'}}>
                     <Typography variant='h4' color="white" sx={{textAlign: 'center'}}>
                         About Us
                     </Typography>
                     <br/>
-                    <Typography variant='h5' color="white" sx={{textAlign: 'center', mx: '10%'}}>
-                        We are five students from McGill University
+                    <Typography variant='h5' color="white" sx={{textAlign: 'center', mx: '15%'}}>
+                    We're a team of 5 passionate students from McGill, brought together by a challenge. Gathered from various backgrounds, we put to use our different skillsets towards the same goal!
+                    </Typography>
+
+                </Grid>  
+                <Grid item xs={12} sx={{mt: 3, mb: 10, pt: 10, pb: 15, width: '100%', mx: 0, backgroundColor: 'secondary.main'}}>
+                    <Typography variant='h5' color="third.main" sx={{textAlign: 'center'}}>
+                        About this project
                     </Typography>
                     <br/>
-                    <Typography variant='h6' color="white" sx={{textAlign: 'center', mx: '10%'}}>
-                        Project built as part of Bolt 2022
+                    <Typography variant='h6' color="third.main" sx={{textAlign: 'center', mx: '15%'}}>
+                        BOLT is the fusion of a case competition and a hackathon. This project conciliates both the skills of a STEM student as well as the knowledge of business majors. With the theme being the future of fintech, our team came up with the idea of a platform that would make an entrepreneur's life easier. With a matchmaking algorithm, we connect entrepreneurs registered on our app to likeminded investors.
+                        <br/>
+                        A first push for entrepreneurs who don't know where to start with funding! We offer a large array of resources and an easy way to reach out to investor through open channels of communication.
                     </Typography>
-                    
+
                 </Grid>  
                 
             </Grid>
