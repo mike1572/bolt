@@ -1,5 +1,7 @@
 
 
+
+
 import React, {Fragment} from 'react'
 
 import PropTypes from 'prop-types';
@@ -28,7 +30,8 @@ import AddIcon from '@mui/icons-material/Add';
 import Linked from '@mui/material/Link';
 
 
-let MatchesCard = (props) => {
+
+let MatchesCardInvestor = (props) => {
 
     let {data: {user: {fullName, image, matches}}} = props
 
@@ -43,11 +46,15 @@ let MatchesCard = (props) => {
         }
     ]
 
+    let handleMatchChat = () => {
+
+    }
+
     return (
         <Grid item sx={{mb: 10}} >
             <Card  sx={{ backgroundColor: 'primary.main', alignItems: 'center', mx: 'auto', mt: 5, fontSize: 13, minWidth: 300}} raised >
                 <CardHeader
-                    title="Your Matches with Investors"
+                    title="Your Matches with Entrepreneurs"
                     sx={{ml: 3, mt: 1, color: "white"}}
                     
                 />
@@ -55,13 +62,15 @@ let MatchesCard = (props) => {
 
 
                 {
-                    matchese.length < 0 ? (
+                    matchese.length > 0 ? (
                         <Fragment>
                         {   
                             matchese.map((element, i) => (
-                                <Fragment>
+                                <Fragment key={i}>
                                     <Tooltip title="Message" placement="right" arrow>
-                                        <Button sx={{textTransform: 'none', pl: 3, justifyContent: 'flex-start', textAlign: 'left', width: '100%'}}>
+                                        <Button sx={{textTransform: 'none', pl: 3, justifyContent: 'flex-start', textAlign: 'left', width: '100%'}}
+                                            onClick={handleMatchChat}
+                                        >
                                             <CardHeader
                                                 sx={{maxWidth: 300}}
                                                 title={`${element.fullName}`}
@@ -83,7 +92,7 @@ let MatchesCard = (props) => {
                             <Typography sx={{color: 'white', pt: 5, pl: 5}} variant="h6">
                                 You have no new matches to chat with.
                             </Typography>
-                            <Button variant='outlined' sx={{backgroundColor: 'primary.main', m: 5, color: 'white', border: 'solid 1px white'}}
+                            <Button outlined sx={{backgroundColor: 'primary.main', m: 5, color: 'white', border: 'solid 1px white'}}
                                 component={Link} to="/resources"
                             >
                                 View Ressources
@@ -98,7 +107,7 @@ let MatchesCard = (props) => {
 }
 
 
-MatchesCard.propTypes = {
+MatchesCardInvestor.propTypes = {
     data: PropTypes.object.isRequired,
 }
 
@@ -110,7 +119,7 @@ const mapActionsToProps = {
     
 }
 
-export default connect(mapStateToProps, mapActionsToProps) (MatchesCard);
+export default connect(mapStateToProps, mapActionsToProps) (MatchesCardInvestor);
 
 
 

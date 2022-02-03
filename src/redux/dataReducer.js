@@ -12,7 +12,9 @@ import {
     REPLACE_BUSINESSES,
     DELETE_BUSINESS_DIALOG,
     DELETE_BUSINESS_ID,
-    DELETE_B
+    DELETE_B,
+    SET_LOADING_RECOMMENDATIONS, 
+    SET_RECOMMENDATIONS
 } from './types';
 
 
@@ -25,13 +27,27 @@ const initialState = {
     chatId: null, 
     addBusiness: false, 
     deleteBusiness: false,
-    businessToBeDeleted: null
+    businessToBeDeleted: null, 
+    recommendations: [], 
+    loadingRecommendations: false
 }
 
 
 export default function(state = initialState, action) {
     switch(action.type){
 
+        case SET_LOADING_RECOMMENDATIONS: {
+            return {
+                ...state, 
+                loadingRecommendations: action.payload
+            }
+        }
+        case SET_RECOMMENDATIONS: {
+            return {
+                ...state, 
+                recommendations: action.payload
+            }
+        }
         case DELETE_B: {
             return {
                 ...state,

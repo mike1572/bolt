@@ -36,8 +36,8 @@ import SocialEntrepreneur from './pages/entrepreneur/SocialEntrepreneur'
 
 // Investor
 import InvestorProfile from './pages/investor/InvestorProfile'
-
-
+import SocialInvestor from './pages/investor/SocialInvestor'
+import Recommendations from './pages/investor/Recommendations'
 
 
 import AuthRoute from './util/AuthRoute';
@@ -154,9 +154,9 @@ function App() {
             display: window.innerWidth > 385 ? 'block' : 'none' 
            }} /> 
           <Button 
-            style={{borderRadius: 50, position: 'absolute', right: '0', top: '0', zIndex: 10, width: '50px', height: '50px', alignItems: 'center' }}
+            style={{borderRadius: 50, position: 'absolute', right: '0', top: '0', zIndex: 10, width: '30px', height: '50px', alignItems: 'center' }}
             onClick={handleChange}
-            sx={{mt: 0.4, mr: -1}}
+            sx={{mt: 0.4, mr: 0}}
             color="secondary">
               {icon}
           </Button>
@@ -183,8 +183,13 @@ function App() {
               {/* {Investor} */}
               <Route exact path="/dashboard" element={<DashboardInvestor/>} />
               <Route exact path="/profile/investor" element={<InvestorProfile/>} />
+              <Route exact path="/messages" element={<SocialInvestor/>} />
+              <Route exact path="/recommendations" element={<Recommendations/>} />
+
 
             </Route>
+
+
 
             <Route path='*' element={<ErrorRoute/>} />
 

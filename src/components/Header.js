@@ -23,7 +23,7 @@ import ReviewsIcon from '@mui/icons-material/Reviews';
 
 //Redux
 import {connect} from 'react-redux'
-import {logoutUser} from '../redux/dataActions'
+import {logoutUser, setRecommendations} from '../redux/dataActions'
 
 import Lynked from '../images/lynked.png'
 
@@ -61,6 +61,12 @@ let Header = (props) => {
     props.logoutUser()
   }
 
+  let refreshRecommendations = () => {
+    props.setRecommendations(props.user)
+  }
+
+
+
   let navbar;
 
   if (props.authenticated) {
@@ -84,7 +90,7 @@ let Header = (props) => {
           <Button color="inherit" component={Link} to='/dashboard'>{size.width < 620 ? <Tooltip title="Home"><HomeIcon/></Tooltip> : "Home"}</Button>
           <Button color="inherit" component={Link} to='/messages'>{size.width < 620 ? <Tooltip title="Social"><ChatIcon/></Tooltip> : "Social"}</Button>
           <Button color="inherit" component={Link} to='/profile/investor'>{size.width < 620 ? <Tooltip title="Profile"><PersonIcon/></Tooltip> : "Profile"}</Button>
-          <Button color="inherit" component={Link} to='/recommendations'>{size.width < 620 ? <Tooltip title="Recommendations"><ReviewsIcon/></Tooltip> : "Recommendations"}</Button>
+          <Button color="inherit" onClick={refreshRecommendations} component={Link} to='/recommendations'>{size.width < 620 ? <Tooltip title="Recommendations"><ReviewsIcon/></Tooltip> : "Recommendations"}</Button>
           <Button color="inherit" onClick={handleLogout} >{size.width < 620 ? <Tooltip title="Logout"><LogoutIcon/></Tooltip> : "Logout"}</Button>
 
         </Fragment>
@@ -122,16 +128,20 @@ let Header = (props) => {
 Header.propTypes = {
   authenticated: PropTypes.bool.isRequired,
   type: PropTypes.string,
-  logoutUser: PropTypes.func.isRequired
+  logoutUser: PropTypes.func.isRequired,
+  setRecommendations: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
   authenticated: state.data.authenticated,
-  type: state.data.type
+  type: state.data.type,
+  user: state.data.user
 })
 
 const mapActionsToProps = {
-  logoutUser
+  logoutUser,
+  setRecommendations
 }
 
 

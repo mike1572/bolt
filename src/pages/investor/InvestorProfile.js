@@ -58,7 +58,6 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 
-
 function tocurrency(value) {
     value = (value).toLocaleString('en-US', {
         style: 'currency',
@@ -72,30 +71,18 @@ let InvestorProfile = (props) => {
     let [openDialog, setOpenDialog] = useState(false)
 
     let {data: {user: {fullName, image, email, facebook, profession, github, linkedin, bio, businesses, 
-        company, typeOfBusiness, fundingStage, pitch, industr, location, funding}, userId}
+        company, typeOfBusiness, fundingStage, pitch, industry, location, funding}, userId}
     } = props
 
 
-    // TODO
-    // display in profile
 
-    // type of business interested
-    // funding stage interested
-    // location 
     // funding budget
-    // industry interested
-    // pitch
-
-
 
 
     let handleImageChange = (event) => {
         // select first file in the array
         const image = event.target.files[0]
         // send to server
-
-        console.log(image)
-
         let storageRef = ref(storage, `images/${image.name}`)
         const uploadTask = uploadBytesResumable(storageRef, image)
         uploadTask.on(
@@ -132,7 +119,7 @@ let InvestorProfile = (props) => {
 
     if (company !== null && company !== undefined){
         companyIcon = (
-            <ListItem key="company" sx={{color: 'warning.main'}}>
+            <ListItem key="companyName" sx={{color: 'warning.main'}}>
                 <CorporateFareIcon sx={{mr: 2}}/>
                 <ListItemText primary={company} />
             </ListItem>
@@ -159,22 +146,6 @@ let InvestorProfile = (props) => {
     }
 
 
-    let bioIcon;
-    if (bio !== null && bio !== undefined){
-        bioIcon = (
-            <ListItem key="bio" sx={{mt: 2, color: 'warning.main'}}>
-                <ListItemText>
-                    <Typography variant="body1">" {bio} "</Typography>
-                </ListItemText>
-            </ListItem>
-        )
-    } else {
-        bioIcon = (
-            <Fragment></Fragment>
-        )
-    }
-
-
     let linkedinIcon; 
 
     if (linkedin !== null && linkedin !== undefined){
@@ -192,11 +163,171 @@ let InvestorProfile = (props) => {
         )
     }
 
-
-    let handleDelete = (event) => {
-        props.deleteBusinessDialog(true, event.target.name)
+    let locationIcon; 
+    if (location !== null && location !== undefined){
+        locationIcon = (
+            <ListItem key="company" sx={{color: 'warning.main'}}>
+                <LocationOnIcon sx={{mr: 2}}/>
+                <ListItemText primary={location} />
+            </ListItem>
+        )
+    } else {
+        locationIcon = (
+            <Fragment></Fragment>
+        )
     }
 
+    let fundingStageIcon; 
+    if (fundingStage !== null && fundingStage !== undefined){
+        fundingStageIcon = (
+
+            <Fragment>
+                
+                    <Grid container key="fundingStage" sx={{color: 'warning.main'}}
+                        alignItems='center'
+                        justifyContent='center'
+                        direction='column'
+                    >
+                        <Typography sx={{color: 'white', mt: 3, mb: 2}} variant="h6">
+                           Funding Stages of Interest
+                        </Typography>
+                    {
+                        fundingStage.map((element, i) => (
+                            <Fragment key={i}>
+                                <Grid  
+                                alignItems='center'
+                                justifyContent='center'
+                                item xs={12} sm={10} md={6} key="fundingStage" sx={{color: 'warning.main', backgroundColor: 'success.main', height: 50, m: 1, p: 1, borderRadius: '12%'}}>
+                                {element}
+                                </Grid>
+                            </Fragment>
+                        ))
+                    }
+                    </Grid>
+         
+            </Fragment>
+         
+        )
+    } else {
+        fundingStageIcon = (
+            <Fragment></Fragment>
+        )
+    }
+
+    
+    
+    let businessTypeIcon; 
+    if (typeOfBusiness !== null && typeOfBusiness !== undefined){
+        businessTypeIcon = (
+
+            <Fragment>
+                
+                     
+                    <Grid container key="typeOfBusiness" sx={{color: 'warning.main'}}
+                        alignItems='center'
+                        justifyContent='center'
+                        direction='column'
+                    >
+                        <Typography sx={{color: 'white', mt: 3, mb: 2}} variant="h6">
+                            Types of Business of Interest
+                        </Typography>
+                    {
+                        typeOfBusiness.map((element, i) => (
+                            <Fragment key={i}>
+                                <Grid  
+                                alignItems='center'
+                                justifyContent='center'
+                                item xs={10}  key="fundingStage" sx={{color: 'warning.main', backgroundColor: '#00838f', height: 50, m: 1, p: 1, borderRadius: '12%'}}>
+                                {element}
+                                </Grid>
+                            </Fragment>
+                        ))
+                    }
+                    </Grid>
+         
+            </Fragment>
+         
+        )
+    } else {
+        businessTypeIcon = (
+            <Fragment></Fragment>
+        )
+    }
+
+    let industryIcon; 
+    if (industry !== null && industry !== undefined){
+        industryIcon = (
+
+            <Fragment>
+    
+                    <Grid container key="industry" sx={{color: 'warning.main'}}
+                        alignItems='center'
+                        justifyContent='center'
+                        direction='column'
+                    >
+                        <Typography sx={{color: 'white', mt: 3, mb: 2}} variant="h6">
+                            Industries of Interest
+                        </Typography>
+                    {
+                        industry.map((element, i) => (
+                            <Fragment key={i}>
+                                <Grid  
+                                alignItems='center'
+                                justifyContent='center'
+                                item xs={10}  key="fundingStage" sx={{color: 'warning.main', backgroundColor: 'success.main', height: 50, m: 1, p: 1, borderRadius: '12%'}}>
+                                {element}
+                                </Grid>
+                            </Fragment>
+                        ))
+                    }
+                    </Grid>
+         
+            </Fragment>
+         
+        )
+    } else {
+        industryIcon = (
+            <Fragment></Fragment>
+        )
+    }
+
+
+    let fundingIcon; 
+    if (funding !== null && funding !== undefined){
+        fundingIcon = (
+
+            <Fragment>
+                <ListItem key="funding" sx={{color: 'warning.main'}}>
+                    <AttachMoneyIcon sx={{mr: 2, mb: 1}}/>
+                    <ListItemText primary={`${tocurrency(funding[0])} to ${tocurrency(funding[1])}`} />
+                </ListItem>
+            </Fragment>
+         
+        )
+    } else {
+        fundingIcon = (
+            <Fragment></Fragment>
+        )
+    }
+
+    let pitchIcon; 
+    if (pitch !== null && pitch !== undefined){
+        pitchIcon = (
+
+            <ListItem key="pitch" sx={{color: 'warning.main', mt: 1, mb: 1, maxWidth: 290}}>
+                <ListItemText>
+                    <Typography justifyContent={'center'} textAlign={'center'} variant="body1">
+                    {`" ${pitch} "`}
+                    </Typography>
+                </ListItemText>
+            </ListItem>
+         
+        )
+    } else {
+        pitchIcon = (
+            <Fragment></Fragment>
+        )
+    }
     return (
 
         <Fragment>
@@ -224,9 +355,6 @@ let InvestorProfile = (props) => {
                         
                     }}
                     >
-                        {/* <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-                            <AccountCircle />
-                        </Avatar> */}
                         <Typography variant='h5' sx={{color: 'warning.main', mt: 5, mb: 4}}>Investor Profile</Typography>
 
                         <img src={image} alt="Profile Image" style={{
@@ -254,28 +382,41 @@ let InvestorProfile = (props) => {
                                 </Typography>
                             </ListItem>
 
+
+                            {pitchIcon}
+
+                            <ListItem sx={{mb: 1, mt: 1, mx: 14}} key='socials'>
+                                {linkedinIcon}
+                            </ListItem>
+                            
+                        
                             <ListItem sx={{mb: 1 ,color: 'warning.main'}} >
                                 <AccountBoxIcon sx={{mr: 2}}/>
                                 <ListItemText primary="Investor" />
                             </ListItem>    
 
                             <ListItem key="email" sx={{color: 'warning.main'}}>
-                                <EmailIcon sx={{mr: 2}}/>
+                                <EmailIcon sx={{mr: 2, mb: 1}}/>
                                 <ListItemText primary={email} />
                             </ListItem>
 
+                           
                             { companyIcon }
+
+                            
                             { professionIcon }
-                            { bioIcon }
 
+                            { locationIcon }
 
-                            <ListItem key="socials">
-                              
-                                {linkedinIcon}
-                             
-                            </ListItem>
+                            {fundingIcon}
 
-    
+                            {fundingStageIcon}
+
+                            {businessTypeIcon}
+
+                            {industryIcon}
+
+                        
                         </List>
                         <Button onClick={handleEditClick} variant="contained" sx={{mt: 5, color: 'warning.main', border: 'solid 1px white'}}>Edit</Button>
                     </Box>

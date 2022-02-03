@@ -99,6 +99,7 @@ let SignupInvestor = (props) => {
                     fullName, fullName, 
                     company: company,
                     type: 'investor',
+                    matches: [],
                     image: 'https://firebasestorage.googleapis.com/v0/b/bolt-b9576.appspot.com/o/blank.png?alt=media&token=3c9d2c2b-681a-4f89-a9a6-848098e64317'           
                 })
                 .then(() => {

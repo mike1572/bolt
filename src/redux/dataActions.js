@@ -16,8 +16,43 @@ import {
     REPLACE_BUSINESSES,
     DELETE_BUSINESS_DIALOG,
     DELETE_BUSINESS_ID,
-    DELETE_B
+    DELETE_B,
+
+    SET_LOADING_RECOMMENDATIONS, 
+    SET_RECOMMENDATIONS
 } from './types';
+
+export const setRecommendations = (user) => (dispatch) => {
+
+    console.log(user)
+
+    const {funding, fundingStage, industry, typeOfBusiness} = user
+
+
+    console.log(funding, fundingStage, industry, typeOfBusiness)
+
+    let maxFunding = funding[1]
+
+
+    let arrayOfRecommendations = []
+
+
+
+    
+    
+
+    dispatch({
+        type: SET_LOADING_RECOMMENDATIONS, 
+        payload: true
+    })
+
+
+    dispatch({
+        type: SET_LOADING_RECOMMENDATIONS, 
+        payload: false
+    })
+}
+
 
 export const removeBusinessFromArray = (id) => (dispatch) => {
 
