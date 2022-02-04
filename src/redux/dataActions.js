@@ -1,7 +1,8 @@
 
 import {auth, db} from '../firebaseConfig';
 import {doc, getDoc} from 'firebase/firestore'
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy, limit  } from "firebase/firestore";
+
 
 import {
     SET_AUTHENTICATED, 
@@ -24,33 +25,132 @@ import {
 
 export const setRecommendations = (user) => (dispatch) => {
 
-    console.log(user)
-
-    const {funding, fundingStage, industry, typeOfBusiness} = user
-
-
-    console.log(funding, fundingStage, industry, typeOfBusiness)
-
-    let maxFunding = funding[1]
-
-
-    let arrayOfRecommendations = []
-
-
-
-    
-    
 
     dispatch({
         type: SET_LOADING_RECOMMENDATIONS, 
         payload: true
     })
 
+    const {funding, fundingStage, industry, typeOfBusiness} = user
 
-    dispatch({
-        type: SET_LOADING_RECOMMENDATIONS, 
-        payload: false
+
+    let maxFunding = funding[1]
+    let minFunding = funding[0]
+
+    let businessesRef = collection(db, "businesses");
+
+    let q = query(businessesRef, 
+        // where("fundingStage", "in", fundingStage), 
+        where("typeOfBusiness", "in", typeOfBusiness),
+        // where("industry", "array-contains-any", industryList),
+        orderBy("createdAt", "desc")
+        //,limit(100)
+    )
+
+
+    
+    let arrayOfRecommendations = []
+
+    getDocs(q)
+    .then((docs) => {
+        docs.forEach((doc) => {
+            let info = doc.data()
+            let match = 0
+
+            if (fundingStage.includes(info.fundingStage)){
+                match++
+            }
+
+            for (let i = 0; i < info.industry.length; i++){
+                if (industry.includes(info.industry[i])) {
+                    match++
+                    break;
+                }
+            }
+
+            //#if the lower bound of the investor is not higher than the upper bound of the buisiness AND the lower bound of the buisnnes is not higher than the upper bound of the investor.
+            //if (not(investor.funding_budget[0] > business.funding_required[1]) and not(investor.funding_budget[1] < business.funding_required[0])):
+
+            if ( !(minFunding > info.funding[0]) && !(maxFunding < info.funding[1])){
+                match++
+            }
+
+            if (match > 0){
+                info.id = doc.id
+                arrayOfRecommendations.push(info)
+            }
+
+ 
+        })
     })
+    .then(() => {
+
+        const promises = arrayOfRecommendations.map(recom => getDoc(doc(db, "users", recom.user)))
+
+        Promise.all(promises)
+        .then(results => {
+            results.map((docSnapshot, i) => {
+
+                let obj = docSnapshot.data()
+                obj.id = docSnapshot.id
+
+                let user = {
+                    id: docSnapshot.id,
+                    image: obj.image, 
+                    profession: obj.profession, 
+                    bio: obj.bio, 
+                    fullName: obj.fullName, 
+                    facebook: obj.facebook, 
+                    github: obj.github, 
+                    linkedin: obj.linkedin,
+                    businesses: obj.businesses
+                }
+
+                arrayOfRecommendations[i].user = user
+            });
+
+            dispatch({
+                type: SET_RECOMMENDATIONS, 
+                payload: arrayOfRecommendations
+            })
+
+            dispatch({
+                type: SET_LOADING_RECOMMENDATIONS, 
+                payload: false
+            })
+
+            
+        })
+        .catch((err) => {
+            console.log(err)
+            dispatch({
+                type: SET_LOADING_RECOMMENDATIONS, 
+                payload: false
+            })
+
+            dispatch({
+                type: SET_RECOMMENDATIONS, 
+                payload: []
+            })
+        })
+    })
+    .catch((err) => {
+        
+        dispatch({
+            type: SET_LOADING_RECOMMENDATIONS, 
+            payload: false
+        })
+
+        dispatch({
+            type: SET_RECOMMENDATIONS, 
+            payload: []
+        })
+        console.log(err)
+    })
+    
+
+
+
 }
 
 

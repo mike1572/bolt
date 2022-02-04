@@ -30,7 +30,6 @@ import AddIcon from '@mui/icons-material/Add';
 import Linked from '@mui/material/Link';
 
 
-
 let MatchesCardInvestor = (props) => {
 
     let {data: {user: {fullName, image, matches}}} = props

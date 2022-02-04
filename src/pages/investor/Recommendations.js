@@ -62,20 +62,6 @@ let Recommendations = (props) => {
 
     }
 
-    let matchese = [
-        {
-            fullName:"Elon Musk", 
-            image: image
-        },
-        {
-            fullName:"Elon Musk", 
-            image: image
-        }
-    ]
-
-    let handleMatchChat = () => {
-        
-    }
 
     return (
         <Fragment>
@@ -136,7 +122,7 @@ let Recommendations = (props) => {
                             ): (
                                 <Fragment>
                                     {
-                                        recommendations.length !== 0 ? (
+                                        recommendations.length === 0 ? (
                                             <Fragment>
                                                 <Card sx={{backgroundColor: 'primary.main', p: 3, mt: 5, mx: '15%', textAlign: 'center'}}>
                                                     <CardHeader
@@ -168,7 +154,15 @@ let Recommendations = (props) => {
                                                     direction="row"
                                                 
                                                 > 
-                                                <Recommendation dataInputed={{}}/>
+
+                                                {
+                                                    recommendations.map((recom, i) => (
+                                                        <Fragment key={i}>
+                                                            <Recommendation dataInputed={recom}/>
+                                                        </Fragment>
+                                                    ))
+                                                }
+                                                
                                                 </Grid>
                                             </Fragment>
                                         )

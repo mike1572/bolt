@@ -26,74 +26,172 @@ import AddIcon from '@mui/icons-material/Add';
 import Linked from '@mui/material/Link';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 
+import DialogAddBusiness from '../../components/entrepreneur/DialogAddBusiness'
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import PeopleIcon from '@mui/icons-material/People';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import BusinessIcon from '@mui/icons-material/Business';
+import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
+import StoreOutlinedIcon from '@mui/icons-material/StoreOutlined';
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
+import Box from '@mui/material/Box'
+import { Container } from '@mui/material';
 
-let info = {
-    companyName: "SpaceX", 
-    employees: "250-500 employees",
-    funding: [
-        10, 
-        2000000
-    ], 
-    fundingStage: "EarlyStage", 
-    image: "https://firebasestorage.googleapis.com/v0/b/bolt-b9576.appspot.com/o/logos%2Fdog3.png?alt=media&token=58c0bbb3-0c7a-45ff-b29a-83612e9c924b",
-    industry: [
-        "Healthcare", "Transport"
-    ], 
-    location: "Texas", 
-    pitch: "Conquer the world", 
-    typeOfBusiness: "Scalable", 
-    user: {
-        id: "userID",
-        bio: "Conquer Mars", 
-        email: "email@email.com", 
-        facebook: "email@email", 
-        image: "https://firebasestorage.googleapis.com/v0/b/bolt-b9576.appspot.com/o/images%2Fdog.jpg?alt=media&token=579af28d-b1e3-4a83-8ca3-e3d274ab9d54", 
-        profession: "CEO", 
-        fullName: "Elon Musk"
-    }
+function tocurrency(value) {
+    value = (value).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+    return `${value}`;
 }
+
 
 let Recommendation = (props) => {
 
 
-    let {data: {user: {fullName, image, matches}, recommendations, loadingRecommendations}, dataInputed} = props
+    let {data: {user: {fullName, image, matches}, recommendations, loadingRecommendations}, dataInputed, type} = props
+
+
+    let addMatch = (event) => {
+        console.log(matches)
+        console.log(event.target.name)
+
+        console.log(dataInputed.user)
+
+        let a = matches.filter(element => element.id === dataInputed.user.id)
+        console.log(a)
+        // props.storeMatch(event.target.name, type)
 
 
 
-    useEffect(() => {
-        console.log(dataInputed)
-    }, [dataInputed])
+    }
 
     return (
         <Grid item alignItems={'center'} justifyContent={'center'} sx={{mb: 5}} xs={12} sm={8} md={6} lg={5}>
-            <Card sx={{ mx: 2 }}>
+            <Card sx={{ mx: 2, maxWidth: 550 }} raised>
                 <CardHeader
                     avatar={
-                        <Skeleton animation="wave" variant="circular" width={60} height={60} />
+                        <Avatar alt={'Profile Image'} src={dataInputed.user.image} aria-label="picture"/>
                     }
-                    title={
-               
-                        <Skeleton
-                        animation="wave"
-                        height={20}
-                        width="80%"
-                        style={{ marginBottom: 6 }}
-                        />
-
-                    }
+                    title={`${dataInputed.user.fullName}`}
+                    titleTypographyProps={{variant:'body1' }}
                     subheader={
-                        <Skeleton animation="wave" height={20} width="40%" />
+                        <Typography>
+                            {dataInputed.user.profession !== undefined ? (
+                                <Fragment>
+                                    {dataInputed.user.profession}
+                                </Fragment>
+                            ) : (
+                                <Fragment></Fragment>
+                            ) 
+                            }
+                        </Typography>
                     }
+                    subheaderTypographyProps={{variant:'body1' }}
                 />
+                <CardMedia
+                    component='img'
+                    height='100%'
+                    src={dataInputed.image}
+                    style={{position: 'relative', minHeight: '100%', maxHeight: 350 }}
+                    alt="Company Logo" 
                 
-                    <Skeleton sx={{ height: 290 }} animation="wave" variant="rectangular" />
-             
+                />
+
                 <CardContent>
-                    <Fragment>
-                        <Skeleton animation="wave" height={20} style={{ marginBottom: 6 }} />
-                        <Skeleton animation="wave" height={20} width="80%" />
-                    </Fragment>
+                    <Typography color="warning" variant="h6" sx={{ml: 1}}>
+                        Business Details
+                    </Typography>
+                    <hr/>
+                    <List sx={{justifyContent: 'center'}}>
+                        <ListItem sx={{mb: 1 ,color: 'primary.main'}} >
+                            <BusinessIcon sx={{mr: 2}}/>
+                            <ListItemText primary={dataInputed.companyName}/>
+                        </ListItem> 
+                        <ListItem sx={{mb: 1 ,color: 'primary.main'}} >
+                            <LocationOnIcon sx={{mr: 2}}/>
+                            <ListItemText primary={dataInputed.location} />
+                        </ListItem> 
+                        <ListItem sx={{mb: 1 ,color: 'primary.main'}} >
+                            <PeopleOutlineOutlinedIcon sx={{mr: 2}}/>
+                            <ListItemText primary={dataInputed.employees} />
+                        </ListItem> 
+                        <ListItem sx={{mb: 1, color: 'primary.main'}} >
+                            <CreditScoreIcon sx={{mr: 2}}/>
+                            <ListItemText primary={dataInputed.fundingStage} />
+                        </ListItem>
+                        <ListItem sx={{mb: 1 ,color: 'primary.main'}} >
+                            <StoreOutlinedIcon sx={{mr: 2}}/>
+                            <ListItemText primary={
+                                <Typography>
+                                    <i>Type: </i>{dataInputed.typeOfBusiness}
+                                </Typography>
+                            } />
+                        </ListItem>
+                        <ListItem sx={{mb: 1 ,color: 'primary.main'}} >
+                            <MonetizationOnOutlinedIcon sx={{mr: 2}}/>
+                            <ListItemText primary={
+                                <Typography>
+                                    <i>Amount Sought: </i>{tocurrency(dataInputed.funding[0])} to {tocurrency(dataInputed.funding[1])}
+                                </Typography>
+                            } />
+                        </ListItem> 
+                        <ListItem sx={{mb: 1 ,color: 'primary.main'}}>
+                            <ListItemText>
+                                <Typography textAlign={'center'} variant="body1" sx={{mb: 2}}>
+                                    <b>Operating in</b>
+                                </Typography>
+                                <Container variant="body1">
+                                {
+                                    dataInputed.industry.map((industry, i) => (
+                                        <Fragment key={i}>
+                                            <Box sx={{backgroundColor: 'secondary.main', color: 'third.main', m: 2, p: 2, mx: '15%'}}>
+                                                {industry}
+                                            </Box>
+                                            
+                                        </Fragment>
+                                    ) )
+                                }
+                                </Container>
+                            </ListItemText>
+                        </ListItem>
+                        <ListItem sx={{mb: 1 ,color: 'primary.main'}}>
+                            <ListItemText >
+                                <Typography justifyContent={'center'} textAlign={'center'} variant="body1">
+                                <i><b>{dataInputed.pitch}</b></i>
+                                </Typography>
+                            </ListItemText>
+                        </ListItem>
+                    </List>
+                    <hr/>
+                    <Typography color="warning" variant="h6" sx={{ml: 1, mt: 2, mb: 2}}>
+                        About the Entrepreneur
+                    </Typography>
+                    <hr/>
+                    <List sx={{justifyContent: 'center'}}>
+                        <ListItem sx={{mb: 1 ,color: 'primary.main'}} >
+                            <AccountCircleIcon sx={{mr: 2}}/>
+                            <ListItemText primary={dataInputed.user.fullName} />
+                        </ListItem> 
+                        <ListItem sx={{mb: 1 ,color: 'primary.main'}} >
+                            <DriveFileRenameOutlineIcon sx={{mr: 2}}/>
+                            <ListItemText primary={dataInputed.user.bio}  />
+                        </ListItem> 
+                    </List>
+                    <hr/>
+                    <Button name={dataInputed.user.id} onClick={addMatch} variant="contained" sx={{ml: 1, mt: 1,}}>
+                        Contact the Entrepreneur
+                    </Button>
                 </CardContent>
             </Card>
         </Grid>
