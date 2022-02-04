@@ -2,9 +2,15 @@
 import React, {Fragment, useEffect} from 'react'
 
 import PropTypes from 'prop-types';
+
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import {db, storage, auth} from '../../firebaseConfig';
+
+import {useNavigate} from 'react-router-dom'
+
 // Redux
 import {connect } from 'react-redux'
-import {} from '../../redux/dataActions'
+import {updateChatID, addOneMatch} from '../../redux/dataActions'
 
 //MUI
 import Button from '@mui/material/Button';
@@ -58,21 +64,64 @@ function tocurrency(value) {
 
 let Recommendation = (props) => {
 
+    const navigate = useNavigate();
 
-    let {data: {user: {fullName, image, matches}, recommendations, loadingRecommendations}, dataInputed, type} = props
+    let {data: {user: {fullName, image, matches}, userId, recommendations, loadingRecommendations}, dataInputed, type} = props
 
 
     let addMatch = (event) => {
         console.log(matches)
         console.log(event.target.name)
 
+        let matchId = event.target.name
+
         console.log(dataInputed.user)
 
-        let a = matches.filter(element => element.id === dataInputed.user.id)
-        console.log(a)
+        let aMatch = matches.filter(element => element.id === dataInputed.user.id)
+        console.log(aMatch)
         // props.storeMatch(event.target.name, type)
 
+        if (aMatch.length === 0){
+            updateDoc(doc(db, "users", userId), {
+                matches: arrayUnion(matchId)
+            })
+            .then(() => {
+                updateDoc(doc(db, "users", matchId), {
+                    matches: arrayUnion(userId)
+                })
+                .then(() => {
 
+                    navigate('/messages')
+                    console.log(matchId)
+                    props.addOneMatch({
+                        id: dataInputed.user.id,
+                        email: dataInputed.user.email, 
+                        bio: dataInputed.user.bio, 
+                        businesses: dataInputed.user.businesses, 
+                        facebook: dataInputed.user.facebook, 
+                        fullName: dataInputed.user.fullName, 
+                        github:dataInputed.user.github, 
+                        image: dataInputed.user.image, 
+                        linkedin: dataInputed.user.linkedin, 
+                        profession:dataInputed.user.profession, 
+                    })
+                    props.updateChatID(matchId)
+
+
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+        } else {
+            navigate('/messages')
+            console.log(matchId)
+            props.updateChatID(matchId)
+        }
 
     }
 
@@ -151,12 +200,15 @@ let Recommendation = (props) => {
                                 <Typography textAlign={'center'} variant="body1" sx={{mb: 2}}>
                                     <b>Operating in</b>
                                 </Typography>
-                                <Container variant="body1">
+                                <Container variant="body1" >
                                 {
                                     dataInputed.industry.map((industry, i) => (
                                         <Fragment key={i}>
                                             <Box sx={{backgroundColor: 'secondary.main', color: 'third.main', m: 2, p: 2, mx: '15%'}}>
-                                                {industry}
+                                                <Typography textAlign="center">
+                                                    {industry}
+                                                </Typography>
+                                                
                                             </Box>
                                             
                                         </Fragment>
@@ -200,8 +252,9 @@ let Recommendation = (props) => {
 
 Recommendation.propTypes = {
     data: PropTypes.object.isRequired,
-    dataInputed: PropTypes.object.isRequired
-
+    dataInputed: PropTypes.object.isRequired,
+    updateChatID: PropTypes.func.isRequired,
+    addOneMatch: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -209,7 +262,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionsToProps = {
-    
+    updateChatID,
+    addOneMatch
 }
 
 export default connect(mapStateToProps, mapActionsToProps) (Recommendation);

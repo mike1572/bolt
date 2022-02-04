@@ -20,8 +20,30 @@ import {
     DELETE_B,
 
     SET_LOADING_RECOMMENDATIONS, 
-    SET_RECOMMENDATIONS
+    SET_RECOMMENDATIONS,
+
+    SET_CHAT_ID,
+
+    SET_MATCHES,
+    ADD_MATCH
 } from './types';
+
+export const addOneMatch = (match) => (dispatch) => {
+    dispatch({
+        type: ADD_MATCH, 
+        payload: match
+    })
+}
+
+
+export const updateChatID = (id) => (dispatch) => {
+    
+    dispatch({
+        type: SET_CHAT_ID, 
+        payload: id
+    })
+
+}
 
 export const setRecommendations = (user) => (dispatch) => {
 
@@ -97,6 +119,7 @@ export const setRecommendations = (user) => (dispatch) => {
                 let user = {
                     id: docSnapshot.id,
                     image: obj.image, 
+                    email: obj.email,
                     profession: obj.profession, 
                     bio: obj.bio, 
                     fullName: obj.fullName, 
@@ -280,6 +303,54 @@ export const getUserData = () => (dispatch) => {
                         })
                 
                     }
+
+
+                    const promises = data.matches.map(u => getDoc(doc(db, "users", u)))
+                
+                    let matchesValues = []
+                    Promise.all(promises)
+                    .then(results => {
+                        results.map(docSnapshot => {
+                            let obj = docSnapshot.data()
+                        
+                            let info = {}
+
+                            info.id = docSnapshot.id
+                            info.linkedin = obj.linkedin
+                            info.email = obj.email
+                            info.facebook = obj.facebook
+                            info.github = obj.github
+                            info.fullName = obj.fullName
+                            info.image = obj.image
+                            info.profession = obj.profession
+                            info.businesses = obj.businesses
+                            info.bio = obj.bio
+                            info.location = obj.location
+                            info.fundingStage = obj.fundingStage
+                            info.industry = obj.industry
+                            info.location = obj.location
+                            info.pitch = obj.pitch
+                            info.typeOfBusiness = obj.typeOfBusiness
+
+                            console.log("Match")
+                            console.log(info)
+
+
+                            matchesValues.push(info)
+                        });
+                    })
+                    .then(() => {
+            
+                        dispatch({
+                            type: SET_MATCHES, 
+                            payload: matchesValues
+                        })
+                        
+                    })
+
+                    
+
+
                 
                     dispatch({
                         type: SET_USER_ID, 

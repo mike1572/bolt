@@ -14,7 +14,11 @@ import {
     DELETE_BUSINESS_ID,
     DELETE_B,
     SET_LOADING_RECOMMENDATIONS, 
-    SET_RECOMMENDATIONS
+    SET_RECOMMENDATIONS, 
+    SET_CHAT_ID,
+
+    SET_MATCHES, 
+    ADD_MATCH
 } from './types';
 
 
@@ -36,6 +40,33 @@ const initialState = {
 export default function(state = initialState, action) {
     switch(action.type){
 
+        case ADD_MATCH: {
+            return {
+                ...state, 
+                user: {
+                    ...state.user, 
+                    matches: [
+                        ...state.user.matches, 
+                        action.payload
+                    ]
+                }
+            }
+        }
+        case SET_MATCHES: {
+            return {
+                ...state, 
+                user:{
+                    ...state.user, 
+                    matches: action.payload
+                }
+            }
+        }
+        case SET_CHAT_ID: {
+            return {
+                ...state, 
+                chatId: action.payload
+            }
+        }
         case SET_LOADING_RECOMMENDATIONS: {
             return {
                 ...state, 
