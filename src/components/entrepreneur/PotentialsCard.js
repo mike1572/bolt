@@ -1,7 +1,7 @@
 
 
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import PropTypes from 'prop-types';
 
@@ -33,33 +33,50 @@ let PotentialsCard = (props) => {
 
     let {data: {user: {fullName, image}}} = props
 
+    const [quote, setQuote] = useState({})
+
+
+    useEffect(() => {
+
+        fetch("https://type.fit/api/quotes")
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            console.log(data);
+
+            let rand = Math.floor(Math.random() * data.length)
+
+            setQuote(data[rand])
+        });
+
+    }, [])
+
     return (
         <Grid item sx={{mb: 10}} >
-            <Card sx={{ backgroundColor:'success.main',  alignItems: 'center', mx: 'auto', mt: 5, fontSize: 13, minWidth: 300}} raised >
-                <CardHeader
-                    title="Your Potentials"
-                    sx={{ml: 3, mt: 1, color: 'white'}}
-                >
-                </CardHeader>
-                <hr/>
+            <Card sx={{ backgroundColor:'third.main', mt: 5}} raised >
+
                 <CardContent>
-                    <Typography variant="h6" sx={{ml: 3, mt: 2, color: 'white'}}>
-                        Investor A: info
+                    <CardHeader
+                        sx={{textAlign: 'center'}}
+                        titleTypographyProps={{color: 'secondary.main', variant: 'h5', mt: 2, fontWeight: 600}}
+                        title={"Inspirational Quote"}
+                    />
+
+                    <Typography variant="h6" sx={{ mt: 1, color: 'secondary.main',
+                        textAlign: 'center', 
+                        mx: 1
+                    }}>
+                        {quote.text}
+                    </Typography>
+                    <Typography variant="body1" sx={{mt: 2, color: 'secondary.main', textAlign: 'center'}}>
+                        <b><i>{quote.author}</i></b>
                     </Typography>
                     
-                    <br/>
-                    <Typography variant="h6" sx={{ml: 3, mt: 1, color: 'white'}}>
-                        Investor A: info
-                    </Typography>
+              
+                   
                     
-                    <br/>
-                    <Typography variant="h6" sx={{ml: 3, mt: 1, color: 'white'}}>
-                        Investor A: info
-                    </Typography>
-                    <br/>
-                    <Typography variant="h6" sx={{ml: 3, mt: 1, color: 'white'}}>
-                        Investor A: info
-                    </Typography>
+                    
                 </CardContent>
             </Card>
         </Grid>

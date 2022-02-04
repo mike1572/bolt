@@ -1,14 +1,15 @@
 
 
+import React, {Fragment, useEffect, useRef, useState} from 'react'
 
-
-import React, {Fragment} from 'react'
+import {db, storage, auth} from '../../firebaseConfig';
+import {setDoc, doc, updateDoc, deleteField, onSnapshot  } from 'firebase/firestore';
 
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 // Redux
 import {connect} from 'react-redux'
-
+import {updateChatID} from '../../redux/dataActions'
 
 //MUI
 import Button from '@mui/material/Button';
@@ -29,29 +30,49 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import Linked from '@mui/material/Link';
 
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
+import makeStyles from '@mui/styles/makeStyles';
+
+const useStyles = makeStyles({
+    content: {
+      justifyContent: "center",
+      color: 'secondary'
+    }
+});
+
 
 let MatchesCardInvestor = (props) => {
 
-    let {data: {user: {fullName, image, matches}}} = props
+    const classes = useStyles();
+    let navigate = useNavigate()
 
-    let matchese = [
-        {
-            fullName:"Elon Musk", 
-            image: image
-        },
-        {
-            fullName:"Elon Musk", 
-            image: image
-        }
-    ]
+    let {data: {user: {fullName, image, matches},userId, chatId}} = props
 
-    let handleMatchChat = () => {
 
+
+    let handleMatchChat = (event) => {
+        let nm = event.target.value
+        if (nm !== undefined) {
+            props.updateChatID(nm)
+            navigate('/messages')
+        }   
     }
+
 
     return (
         <Grid item sx={{mb: 10}} >
-            <Card  sx={{ backgroundColor: 'primary.main', alignItems: 'center', mx: 'auto', mt: 5, fontSize: 13, minWidth: 300}} raised >
+            <Card  sx={{
+                backgroundColor: 'primary.main', alignItems: 'center', mx: 'auto', mt: 5, fontSize: 13, minWidth: 300}} raised >
                 <CardHeader
                     title="Your Matches with Entrepreneurs"
                     sx={{ml: 3, mt: 1, color: "white"}}
@@ -61,41 +82,34 @@ let MatchesCardInvestor = (props) => {
 
 
                 {
-                    matchese.length > 0 ? (
-                        <Fragment>
+                    matches.length > 0 ? (
+                        <CardContent sx={{
+                            overflowY: 'scroll',
+                            maxHeight: 500
+                        }}>
+
                         {   
-                            matchese.map((element, i) => (
+                            matches.map((element, i) => (
                                 <Fragment key={i}>
-                                    <Tooltip title="Message" placement="right" arrow>
-                                        <Button sx={{textTransform: 'none', pl: 3, justifyContent: 'flex-start', textAlign: 'left', width: '100%'}}
-                                            onClick={handleMatchChat}
-                                        >
-                                            <CardHeader
-                                                sx={{maxWidth: 300}}
-                                                title={`${element.fullName}`}
-                                                titleTypographyProps={{variant:'h6', color: 'white' }}
-                                                avatar={
-                                                    <Avatar src={image} sx={{ width: 56, height: 56, mr: 2, ml: 2 }} aria-label="profile picture"/>
-                                                }
-                                            />
+                                    <Tooltip title="Message" placement="right" arrow onClick={handleMatchChat} value={element.id} >
+                                        <Button sx={{textTransform: 'none', pl: 3, justifyContent: 'flex-start', textAlign: 'left', width: '100%'}}>
+                                            <Avatar src={element.image} sx={{ width: 56, height: 56, mr: 2, ml: 2 }} aria-label="profile picture"/>
+                                            <Typography variant='h6' color='white' >
+                                            {`${element.fullName}`}
+                                            </Typography>
                                         </Button>
                                     </Tooltip>
                                     <br/>
                                     <hr/>
                                 </Fragment>
                             ))
-                        }
-                        </Fragment>
+                        } 
+                        </CardContent>
                     ) : (
                         <Fragment>
                             <Typography sx={{color: 'white', pt: 5, pl: 5}} variant="h6">
                                 You have no new matches to chat with.
                             </Typography>
-                            <Button outlined sx={{backgroundColor: 'primary.main', m: 5, color: 'white', border: 'solid 1px white'}}
-                                component={Link} to="/resources"
-                            >
-                                View Ressources
-                            </Button>
                         </Fragment>
                     )
                 }
@@ -108,6 +122,7 @@ let MatchesCardInvestor = (props) => {
 
 MatchesCardInvestor.propTypes = {
     data: PropTypes.object.isRequired,
+    updateChatID: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -115,7 +130,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionsToProps = {
-    
+    updateChatID
 }
 
 export default connect(mapStateToProps, mapActionsToProps) (MatchesCardInvestor);

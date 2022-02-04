@@ -3,10 +3,10 @@
 import React, {Fragment} from 'react'
 
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 // Redux
 import {connect} from 'react-redux'
-
+import {updateChatID} from '../../redux/dataActions'
 
 //MUI
 import Button from '@mui/material/Button';
@@ -30,7 +30,8 @@ import Linked from '@mui/material/Link';
 
 let MatchesCard = (props) => {
 
-    let {data: {user: {fullName, image, matches}}} = props
+    let navigate = useNavigate()
+    let {data: {user: {fullName, image, matches},userId, chatId}} = props
 
     let matchese = [
         {
@@ -42,6 +43,20 @@ let MatchesCard = (props) => {
             image: image
         }
     ]
+
+    
+    let handleMatchChat = (event) => {
+        let nm = event.target.value
+        if (nm !== undefined) {
+            props.updateChatID(nm)
+            navigate('/social')
+        }   
+
+
+    }
+
+
+
 
     return (
         <Grid item sx={{mb: 10}} >
@@ -55,21 +70,17 @@ let MatchesCard = (props) => {
 
 
                 {
-                    matchese.length < 0 ? (
+                    matchese.length > 0 ? (
                         <Fragment>
                         {   
-                            matchese.map((element, i) => (
-                                <Fragment>
-                                    <Tooltip title="Message" placement="right" arrow>
-                                        <Button sx={{textTransform: 'none', pl: 3, justifyContent: 'flex-start', textAlign: 'left', width: '100%'}}>
-                                            <CardHeader
-                                                sx={{maxWidth: 300}}
-                                                title={`${element.fullName}`}
-                                                titleTypographyProps={{variant:'h6', color: 'white' }}
-                                                avatar={
-                                                    <Avatar src={image} sx={{ width: 56, height: 56, mr: 2, ml: 2 }} aria-label="profile picture"/>
-                                                }
-                                            />
+                            matches.map((element, i) => (
+                                <Fragment key={i}>
+                                    <Tooltip title="Message" placement="right" arrow onClick={handleMatchChat} value={element.id} >
+                                        <Button sx={{textTransform: 'none', pl: 3, justifyContent: 'flex-start', textAlign: 'left', width: '100%', mt: 2, mb: 2}}>
+                                            <Avatar src={element.image} sx={{ width: 56, height: 56, mr: 2, ml: 2 }} aria-label="profile picture"/>
+                                            <Typography variant='h6' color='white' >
+                                            {`${element.fullName}`}
+                                            </Typography>
                                         </Button>
                                     </Tooltip>
                                     <br/>
@@ -100,6 +111,7 @@ let MatchesCard = (props) => {
 
 MatchesCard.propTypes = {
     data: PropTypes.object.isRequired,
+    updateChatID: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -107,7 +119,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionsToProps = {
-    
+    updateChatID
 }
 
 export default connect(mapStateToProps, mapActionsToProps) (MatchesCard);

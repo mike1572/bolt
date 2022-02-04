@@ -70,16 +70,9 @@ let Recommendation = (props) => {
 
 
     let addMatch = (event) => {
-        console.log(matches)
-        console.log(event.target.name)
 
         let matchId = event.target.name
-
-        console.log(dataInputed.user)
-
         let aMatch = matches.filter(element => element.id === dataInputed.user.id)
-        console.log(aMatch)
-        // props.storeMatch(event.target.name, type)
 
         if (aMatch.length === 0){
             updateDoc(doc(db, "users", userId), {
@@ -90,9 +83,7 @@ let Recommendation = (props) => {
                     matches: arrayUnion(userId)
                 })
                 .then(() => {
-
                     navigate('/messages')
-                    console.log(matchId)
                     props.addOneMatch({
                         id: dataInputed.user.id,
                         email: dataInputed.user.email, 
@@ -107,7 +98,6 @@ let Recommendation = (props) => {
                     })
                     props.updateChatID(matchId)
 
-
                 })
                 .catch((err) => {
                     console.log(err)
@@ -119,7 +109,6 @@ let Recommendation = (props) => {
 
         } else {
             navigate('/messages')
-            console.log(matchId)
             props.updateChatID(matchId)
         }
 

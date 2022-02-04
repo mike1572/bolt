@@ -64,7 +64,7 @@ let DashboardEntrepreneur = (props) => {
                     justifyContent="center"
                 >
                     <ProfileCard/>
-                    <ApplicationsCard/>
+                    {/* <ApplicationsCard/> */}
                     <MatchesCard/>
                 </Grid>
 
