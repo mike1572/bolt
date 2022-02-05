@@ -5,11 +5,11 @@ import {db, storage, auth} from '../../firebaseConfig';
 import {setDoc, doc, updateDoc, deleteField, addDoc, collection, arrayUnion } from 'firebase/firestore';
 import {ref, uploadBytesResumable, getDownloadURL} from 'firebase/storage';
 
-
 // Redux
 import {connect} from 'react-redux'
 import { addBusiness, updateUser, appendBusinesses} from '../../redux/dataActions';
 
+// MUI
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -19,7 +19,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
-
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -70,7 +69,7 @@ let DialogAddBusiness = (props) =>{
         } else {
           setFunding(newValue);
         }
-      };
+    };
 
 
     const {data: {editProfile, user, userId, addBusiness}} = props
@@ -123,15 +122,12 @@ let DialogAddBusiness = (props) =>{
 
 
     let handleSave = () => {
-        let obj = {}
-        let newState = {}
 
         if (reason !== "" && typeOfBusiness !== "" && fundingStage !== "" && companyName !== "" && pitch !== ""
             && location !== "" && industry.length !== 0 && employees !== "" && image !== ""
         ) {
             setAllAnswered(false)
             setLoading(true)
-            console.log(reason, typeOfBusiness, fundingStage, companyName, pitch, location, industry, employees, image, funding)
 
             let storageRef = ref(storage, `logos/${image.name}`)
             const uploadTask = uploadBytesResumable(storageRef, image)

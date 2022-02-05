@@ -1,50 +1,60 @@
 
-import React, {useState, Fragment} from 'react'
-import {Link, useNavigate} from 'react-router-dom';
-import {db, storage, auth} from '../firebaseConfig';
-import {setDoc, doc, updateDoc } from 'firebase/firestore';
-
-
+import React, { Fragment, useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 
 // Redux
 import {connect} from 'react-redux'
 
-
 //MUI
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ShareIcon from '@mui/icons-material/Share';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Fade from '@mui/material/Fade';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
-import Linked from '@mui/material/Link';
 
 import MontrealNight from '../images/montreal.jpg'
 import DashHead from '../components/DashHead'
 
+import ProfileCardInvestor from '../components/investor/ProfileCardInvestor';
+import PotentialsCard from '../components/entrepreneur/PotentialsCard';
+import MatchesCardInvestor from '../components/investor/MatchesCardInvestor';
+import News from '../components/News';
+
 
 let DashboardInvestor = (props) => {
 
-    let {data: {user: {fullName, image}}} = props
-
+    let {data: {user: {fullName}}} = props
 
     return (
         <Fragment>
 
         <DashHead image={MontrealNight} name={fullName} title={'Dashboard'} profile="none"/>
 
+        <Grid container component="main" 
+                sx={{ height: '40vh'}} 
+                spacing={5}  
+                direction="row"
+                justifyContent="space-evenly"
+                alignItems="flex-start"
+                >
+                <Grid
+                    container
+                    item
+                    xs={12} sm={12} md={6} lg={5}
+                    direction="column"
+                    justifyContent="center"
+                >
+                    <ProfileCardInvestor/>
+                    <MatchesCardInvestor/>
+                    <PotentialsCard/>
+                </Grid>
 
+                <Grid
+                    container
+                    item
+                    direction="column"
+                    justifyContent="center"
+                    xs={12} sm={12} md={4}
+                >
+                    <News/>
+                </Grid>
+            </Grid>
 
         </Fragment>
     )

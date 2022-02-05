@@ -1,7 +1,7 @@
 
 import React, {useState, Fragment} from 'react'
-import {Link, useNavigate} from 'react-router-dom';
-import {db, storage, auth} from '../firebaseConfig';
+import { useNavigate} from 'react-router-dom';
+import {db, auth} from '../firebaseConfig';
 import {setDoc, doc} from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -16,7 +16,6 @@ import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined'
 import TextField from '@mui/material/TextField'
 import CircularProgress from '@mui/material/CircularProgress';
 
-
 import Job from '../images/startup2.jpg'
 
 const customError = {
@@ -25,7 +24,7 @@ const customError = {
     marginLeft: '15px', 
 }
 
-let SignupEntrepreneur = (props) => {
+let SignupEntrepreneur = () => {
     let useTrait = (initialValue) => {
    
         let [errors, setErrors] = useState(initialValue);
@@ -194,7 +193,6 @@ let SignupEntrepreneur = (props) => {
                             value={fullName} 
                             onChange={handleChange}
                            
-
                         />
                         <TextField
                             margin="normal"
@@ -239,8 +237,6 @@ let SignupEntrepreneur = (props) => {
                             onChange={handleChange}
                             
                         />
-
-
 
                         <Typography variant="body2" style={customError}>
                             {errors.get().general}

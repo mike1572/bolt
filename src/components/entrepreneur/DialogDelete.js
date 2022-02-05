@@ -1,16 +1,14 @@
 
-
-import React, {useState, useEffect, Fragment} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {db, storage, auth} from '../../firebaseConfig';
-import {setDoc, doc, updateDoc, deleteField, addDoc, collection, arrayUnion, arrayRemove, deleteDoc } from 'firebase/firestore';
-import {ref, uploadBytesResumable, getDownloadURL} from 'firebase/storage';
-
+import {db} from '../../firebaseConfig';
+import { doc, updateDoc, arrayRemove, deleteDoc } from 'firebase/firestore';
 
 // Redux
 import {connect} from 'react-redux'
 import { deleteBusinessDialog, removeBusinessFromArray} from '../../redux/dataActions';
 
+//MUI
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -19,12 +17,10 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress'
 
-import Typography from '@mui/material/Typography'
-
 
 let DialogDelete = (props) =>{
 
-    const {data: {editProfile, user, userId, addBusiness, deleteBusiness, businessToBeDeleted}} = props
+    const {data: {userId, deleteBusiness, businessToBeDeleted}} = props
 
     const [loading, setLoading] = useState(false)
 

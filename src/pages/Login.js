@@ -1,6 +1,6 @@
 
 
-import React, {Fragment, useState, useEffect} from 'react'
+import React, {Fragment, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {db, auth} from '../firebaseConfig';
 import {signInWithEmailAndPassword} from 'firebase/auth'
@@ -76,30 +76,59 @@ let Login = (props) => {
                 // Signed in 
                 const user = userCredential.user;
                 userId = user.uid;
-                console.log(user.uid)
                 return user.getIdToken()
             })
             .then((idToken) => {
             
                 const docRef = doc(db, "users", userId);
                 getDoc(docRef)
-                .then((doc) => {
+                .then((infoObject) => {
 
-                    if (doc.exists()) {
-                        let data =  doc.data()
-                        console.log(data)
+                    if (infoObject.exists()) {
+                        let data =  infoObject.data()
 
+                        const promises = data.matches.map(u => getDoc(doc(db, "users", u)))
+                
+                        let matchesValues = []
+                        Promise.all(promises)
+                        .then(results => {
+                            results.map(docSnapshot => {
+                                let obj = docSnapshot.data()
+                                let info = {}    
+                                info.id = docSnapshot.id
+                                info.linkedin = obj.linkedin
+                                info.email = obj.email
+                                info.facebook = obj.facebook
+                                info.github = obj.github
+                                info.fullName = obj.fullName
+                                info.image = obj.image
+                                info.profession = obj.profession
+                                info.businesses = obj.businesses
+                                info.bio = obj.bio
+                                info.location = obj.location
+                                info.fundingStage = obj.fundingStage
+                                info.industry = obj.industry
+                                info.location = obj.location
+                                info.pitch = obj.pitch
+                                info.typeOfBusiness = obj.typeOfBusiness
+    
+                                matchesValues.push(info)
+                            });
+                        })
+                        .then(() => {
+                            props.setBusinesses(data.businesses, data.type)
+                            props.loginUser(data, userId, matchesValues)
+                            setLoading(false)
+                            setEmail('')
+                            setPassword('')
+                            errors.set({})
 
-                        props.setBusinesses(data.businesses, data.type)
-                        
-                        props.loginUser(data, userId)
-                        setLoading(false)
-                        setEmail('')
-                        setPassword('')
-                        errors.set({})
+                            const FBIdToken = `Bearer ${idToken}`
+                            localStorage.setItem('FBIdToken', FBIdToken) 
+                        })
 
-                        const FBIdToken = `Bearer ${idToken}`
-                        localStorage.setItem('FBIdToken', FBIdToken)        
+                       
+                            
                     } else {
                         // doc.data() will be undefined in this case
                         console.log("No such document!");
@@ -110,11 +139,6 @@ let Login = (props) => {
                     }
         
                 })
-
-
-             
-
-
                 
             })
             .catch((err) => {

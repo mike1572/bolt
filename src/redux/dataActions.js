@@ -5,6 +5,7 @@ import { collection, query, where, getDocs, orderBy, limit  } from "firebase/fir
 
 
 import {
+    RESET_STATE,
     SET_AUTHENTICATED, 
     SET_TYPE,
     SET_USER, 
@@ -25,8 +26,17 @@ import {
     SET_CHAT_ID,
 
     SET_MATCHES,
-    ADD_MATCH
+    ADD_MATCH,
+    SET_BUSINESSES_OF_PROFILE_WANTED
 } from './types';
+
+
+export const setBusinessesWanted = (businesses) => (dispatch) => {
+    dispatch({
+        type: SET_BUSINESSES_OF_PROFILE_WANTED,
+        payload: businesses
+    })
+}
 
 export const addOneMatch = (match) => (dispatch) => {
     dispatch({
@@ -47,7 +57,6 @@ export const updateChatID = (id) => (dispatch) => {
 
 export const setRecommendations = (user) => (dispatch) => {
 
-
     dispatch({
         type: SET_LOADING_RECOMMENDATIONS, 
         payload: true
@@ -56,96 +65,110 @@ export const setRecommendations = (user) => (dispatch) => {
     const {funding, fundingStage, industry, typeOfBusiness} = user
 
 
-    let maxFunding = funding[1]
-    let minFunding = funding[0]
+    if (funding !== undefined && fundingStage!== undefined && industry !== undefined && typeOfBusiness !== undefined){
 
-    let businessesRef = collection(db, "businesses");
+        let maxFunding = funding[1]
+        let minFunding = funding[0]
 
-    let q = query(businessesRef, 
-        // where("fundingStage", "in", fundingStage), 
-        where("typeOfBusiness", "in", typeOfBusiness),
-        // where("industry", "array-contains-any", industryList),
-        orderBy("createdAt", "desc")
-        //,limit(100)
-    )
+        let businessesRef = collection(db, "businesses");
 
+        let q = query(businessesRef, 
+            // where("fundingStage", "in", fundingStage), 
+            where("typeOfBusiness", "in", typeOfBusiness),
+            // where("industry", "array-contains-any", industryList),
+            orderBy("createdAt", "desc")
+            //,limit(100)
+        )
+
+        
+        let arrayOfRecommendations = []
+
+        getDocs(q)
+        .then((docs) => {
+            docs.forEach((doc) => {
+                let info = doc.data()
+                let match = 0
+
+                if (fundingStage.includes(info.fundingStage)){
+                    match++
+                }
+
+                for (let i = 0; i < info.industry.length; i++){
+                    if (industry.includes(info.industry[i])) {
+                        match++
+                        break;
+                    }
+                }
+
+                //#if the lower bound of the investor is not higher than the upper bound of the buisiness AND the lower bound of the buisnnes is not higher than the upper bound of the investor.
+                //if (not(investor.funding_budget[0] > business.funding_required[1]) and not(investor.funding_budget[1] < business.funding_required[0])):
+
+                if ( !(minFunding > info.funding[0]) && !(maxFunding < info.funding[1])){
+                    match++
+                }
+
+                if (match > 0){
+                    info.id = doc.id
+                    arrayOfRecommendations.push(info)
+                }
 
     
-    let arrayOfRecommendations = []
-
-    getDocs(q)
-    .then((docs) => {
-        docs.forEach((doc) => {
-            let info = doc.data()
-            let match = 0
-
-            if (fundingStage.includes(info.fundingStage)){
-                match++
-            }
-
-            for (let i = 0; i < info.industry.length; i++){
-                if (industry.includes(info.industry[i])) {
-                    match++
-                    break;
-                }
-            }
-
-            //#if the lower bound of the investor is not higher than the upper bound of the buisiness AND the lower bound of the buisnnes is not higher than the upper bound of the investor.
-            //if (not(investor.funding_budget[0] > business.funding_required[1]) and not(investor.funding_budget[1] < business.funding_required[0])):
-
-            if ( !(minFunding > info.funding[0]) && !(maxFunding < info.funding[1])){
-                match++
-            }
-
-            if (match > 0){
-                info.id = doc.id
-                arrayOfRecommendations.push(info)
-            }
-
- 
+            })
         })
-    })
-    .then(() => {
+        .then(() => {
 
-        const promises = arrayOfRecommendations.map(recom => getDoc(doc(db, "users", recom.user)))
+            const promises = arrayOfRecommendations.map(recom => getDoc(doc(db, "users", recom.user)))
 
-        Promise.all(promises)
-        .then(results => {
-            results.map((docSnapshot, i) => {
+            Promise.all(promises)
+            .then(results => {
+                results.map((docSnapshot, i) => {
 
-                let obj = docSnapshot.data()
-                obj.id = docSnapshot.id
+                    let obj = docSnapshot.data()
+                    obj.id = docSnapshot.id
 
-                let user = {
-                    id: docSnapshot.id,
-                    image: obj.image, 
-                    email: obj.email,
-                    profession: obj.profession, 
-                    bio: obj.bio, 
-                    fullName: obj.fullName, 
-                    facebook: obj.facebook, 
-                    github: obj.github, 
-                    linkedin: obj.linkedin,
-                    businesses: obj.businesses
-                }
+                    let user = {
+                        id: docSnapshot.id,
+                        image: obj.image, 
+                        email: obj.email,
+                        profession: obj.profession, 
+                        bio: obj.bio, 
+                        fullName: obj.fullName, 
+                        facebook: obj.facebook, 
+                        github: obj.github, 
+                        linkedin: obj.linkedin,
+                        businesses: obj.businesses
+                    }
 
-                arrayOfRecommendations[i].user = user
-            });
+                    arrayOfRecommendations[i].user = user
+                });
 
-            dispatch({
-                type: SET_RECOMMENDATIONS, 
-                payload: arrayOfRecommendations
+                dispatch({
+                    type: SET_RECOMMENDATIONS, 
+                    payload: arrayOfRecommendations
+                })
+
+                dispatch({
+                    type: SET_LOADING_RECOMMENDATIONS, 
+                    payload: false
+                })
+
+                
             })
+            .catch((err) => {
+                console.log(err)
+                dispatch({
+                    type: SET_LOADING_RECOMMENDATIONS, 
+                    payload: false
+                })
 
-            dispatch({
-                type: SET_LOADING_RECOMMENDATIONS, 
-                payload: false
+                dispatch({
+                    type: SET_RECOMMENDATIONS, 
+                    payload: []
+                })
             })
-
-            
         })
         .catch((err) => {
-            console.log(err)
+            
             dispatch({
                 type: SET_LOADING_RECOMMENDATIONS, 
                 payload: false
@@ -155,22 +178,12 @@ export const setRecommendations = (user) => (dispatch) => {
                 type: SET_RECOMMENDATIONS, 
                 payload: []
             })
+            console.log(err)
         })
-    })
-    .catch((err) => {
-        
-        dispatch({
-            type: SET_LOADING_RECOMMENDATIONS, 
-            payload: false
-        })
-
-        dispatch({
-            type: SET_RECOMMENDATIONS, 
-            payload: []
-        })
-        console.log(err)
-    })
     
+        
+
+    }
 
 
 
@@ -330,11 +343,8 @@ export const getUserData = () => (dispatch) => {
                             info.industry = obj.industry
                             info.location = obj.location
                             info.pitch = obj.pitch
+                            info.company = obj.company
                             info.typeOfBusiness = obj.typeOfBusiness
-
-                            console.log("Match")
-                            console.log(info)
-
 
                             matchesValues.push(info)
                         });
@@ -347,9 +357,6 @@ export const getUserData = () => (dispatch) => {
                         })
                         
                     })
-
-                    
-
 
                 
                     dispatch({
@@ -378,18 +385,10 @@ export const getUserData = () => (dispatch) => {
 
         }
     })
-    // getAuth().verifyIdToken(idToken)
-    // .then((decodedToken) => {
-    //     console.log(decodedToken.uid)
-    // })
-    // .catch((error) => {
-    //     console.log(error)
-    // });
-    
     
 }
 
-export const loginUser = (data, userId) => (dispatch) => {
+export const loginUser = (data, userId, matches) => (dispatch) => {
     
     dispatch({
         type: SET_USER_ID, 
@@ -410,6 +409,12 @@ export const loginUser = (data, userId) => (dispatch) => {
         type: SET_TYPE, 
         payload: data.type
     })
+
+    dispatch({
+        type: SET_MATCHES, 
+        payload: matches
+    })
+    
 }
 
 export const logoutUser = () => (dispatch) => {
@@ -431,6 +436,10 @@ export const logoutUser = () => (dispatch) => {
     dispatch({
         type: SET_USER_ID, 
         payload: null
+    })
+
+    dispatch({
+        type: RESET_STATE
     })
 
     localStorage.removeItem('FBIdToken');

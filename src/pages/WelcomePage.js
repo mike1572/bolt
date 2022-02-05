@@ -1,5 +1,5 @@
 
-import React, {Fragment, useRef, useState, useEffect} from 'react'
+import React, {Fragment, useState} from 'react'
 import {Link} from 'react-router-dom'
 
 //MUI
@@ -11,59 +11,17 @@ import CardMedia from '@mui/material/CardMedia'
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Fade from '@mui/material/Fade';
-import Paper from '@mui/material/Paper'
 import Snackbar from '@mui/material/Snackbar';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import SpeedDial from '@mui/material/SpeedDial';
-import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
-import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
-
-import { makeStyles } from '@mui/styles';
 
 import Tower from '../images/Tower.mp4'
 import Startup from '../images/startup.jpg'
 import Laptop from '../images/laptop.jpg'
 import Lynked from '../images/lynked.png'
 
-const useStyles = makeStyles({
-    color: {
-    backgroundColor: 'secondary'
-    }
-})
-
-// Hook
-let useWindowSize = () => {
-    const [windowSize, setWindowSize] = useState({
-      width: undefined,
-      height: undefined,
-    });
-    useEffect(() => {
-      function handleResize() {
-        setWindowSize({
-          width: window.innerWidth,
-          height: window.innerHeight,
-        });
-      }
-      window.addEventListener("resize", handleResize);
-      handleResize();
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
-    return windowSize;
-}
-
-
 
 let WelcomePage = (props) => {
 
-    const size = useWindowSize()
-
-    let emptyRef = useRef()
-    const classes = useStyles()
     const [open, setOpen] = useState(true)
-
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -71,14 +29,6 @@ let WelcomePage = (props) => {
         }
         setOpen(false);
     };
-
-    let handleTop = () => {
-        emptyRef.current.scrollIntoView({
-            behavior: "smooth",
-            block: "nearest",
-            inline: "start"
-        });
-    }
 
     const action = (
         <Fragment>
@@ -91,18 +41,6 @@ let WelcomePage = (props) => {
     return (
 
         <Fragment>
-
-            {
-                size.width < 600 ? (
-                    <Button       
-                        sx={{pt: 2,pb: 2,  position: 'fixed', bottom: 10, right: 10, borderRadius: 50, zIndex: 50}}
-                        onClick={handleTop}
-                        variant="contained"
-                    ><KeyboardArrowUpRoundedIcon fontSize='large'  /></Button>
-                ): (
-                    <Fragment></Fragment>
-                )
-            }
    
             <Snackbar
                 open={open}
@@ -114,7 +52,6 @@ let WelcomePage = (props) => {
                 action={action}
             />
            
-            <div ref={emptyRef} style={{position: 'absolute', top: 0}}></div>
             <div className='videoText'>
                 <div className='videoHolder'>
                     <video autoPlay muted loop style={{height: '100%', width: '100%', objectFit: 'cover', zIndex: '2'}}>
@@ -122,7 +59,6 @@ let WelcomePage = (props) => {
                     </video>
                 </div>
                 
-               
                 <img src={Lynked} alt="logo" style={{
                     width: 280,  
                     left: '0', 
@@ -153,7 +89,7 @@ let WelcomePage = (props) => {
                    
                     <br/>
                     <Typography variant='h5' color="white" sx={{textAlign: 'center', mx: '10%'}}>
-                        An easy way for entrepreneurs seeking funding to meet investors and access capital quickly
+                        An easy way for entrepreneurs seeking funding to meet investors and access capital
                     </Typography>
                     
                 </Grid>  
@@ -173,7 +109,7 @@ let WelcomePage = (props) => {
                                         Entrepreneurs
                                     </Typography>
                                     <Typography variant="h6" color="white" sx={{mt: 3}}>
-                                        Find ressources, meet investors, gain connections and access capital
+                                        Find resources, meet investors, gain connections and access capital
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
@@ -206,8 +142,6 @@ let WelcomePage = (props) => {
                         </Card>
                 </Grid>
       
-
-            
                 <Grid item xs={12} sx={{mt: 10, mb: 3, pt: 10, pb: 15, width: '100%', mx: 0, backgroundColor: 'primary.main'}}>
                     <Typography variant='h4' color="white" sx={{textAlign: 'center'}}>
                         About Us

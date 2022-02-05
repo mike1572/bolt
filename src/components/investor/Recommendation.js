@@ -1,10 +1,10 @@
 
-import React, {Fragment, useEffect} from 'react'
+import React, {Fragment} from 'react'
 
 import PropTypes from 'prop-types';
 
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
-import {db, storage, auth} from '../../firebaseConfig';
+import {db} from '../../firebaseConfig';
 
 import {useNavigate} from 'react-router-dom'
 
@@ -16,32 +16,14 @@ import {updateChatID, addOneMatch} from '../../redux/dataActions'
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ShareIcon from '@mui/icons-material/Share';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Fade from '@mui/material/Fade';
 import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
-import Linked from '@mui/material/Link';
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-
-import DialogAddBusiness from '../../components/entrepreneur/DialogAddBusiness'
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import PeopleIcon from '@mui/icons-material/People';
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -51,7 +33,7 @@ import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlin
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import Box from '@mui/material/Box'
-import { Container } from '@mui/material';
+import Container from '@mui/material/Container';
 
 function tocurrency(value) {
     value = (value).toLocaleString('en-US', {
@@ -66,8 +48,7 @@ let Recommendation = (props) => {
 
     const navigate = useNavigate();
 
-    let {data: {user: {fullName, image, matches}, userId, recommendations, loadingRecommendations}, dataInputed, type} = props
-
+    let {data: {user: {matches}, userId}, dataInputed} = props
 
     let addMatch = (event) => {
 
@@ -111,7 +92,6 @@ let Recommendation = (props) => {
             navigate('/messages')
             props.updateChatID(matchId)
         }
-
     }
 
     return (
@@ -119,7 +99,7 @@ let Recommendation = (props) => {
             <Card sx={{ mx: 2, maxWidth: 550 }} raised>
                 <CardHeader
                     avatar={
-                        <Avatar alt={'Profile Image'} src={dataInputed.user.image} aria-label="picture"/>
+                        <Avatar alt={'Profile Image'} sx={{width: 45, height: 45}} src={dataInputed.user.image} aria-label="picture"/>
                     }
                     title={`${dataInputed.user.fullName}`}
                     titleTypographyProps={{variant:'body1' }}

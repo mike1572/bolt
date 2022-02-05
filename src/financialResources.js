@@ -1,5 +1,3 @@
-// Js array of objects of resources for investors
-
 
 let financialResources = [
     {

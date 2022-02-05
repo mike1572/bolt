@@ -1,14 +1,14 @@
 
 import React, {useState, useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {db, storage, auth} from '../../firebaseConfig';
-import {setDoc, doc, updateDoc, deleteField  } from 'firebase/firestore';
-
+import {db} from '../../firebaseConfig';
+import { doc, updateDoc, deleteField  } from 'firebase/firestore';
 
 // Redux
 import {connect} from 'react-redux'
 import {editProfilePersonal , updateUser} from '../../redux/dataActions';
 
+//MUI
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -18,17 +18,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
-
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
-import Icon from '@mui/material/Icon'
 import Typography from '@mui/material/Typography'
 import Slider from '@mui/material/Slider';
 
@@ -38,35 +32,22 @@ const customError = {
     marginLeft: '15px', 
 }
 
-function valuetext(value) {
-    value = (value).toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    });
-    return `$${value}`;
-}
   
 const minDistance = 10000;
 
 let DialogInvestorProfile = (props) =>{
 
-    const {data: {editProfile, user, userId,  addBusiness}} = props
-
+    const {data: {editProfile, user, userId}} = props
     const [loading, setLoading] = useState(false)
-
     const [email, setEmail] = useState(user.email)
     const [fullname, setFullName] = useState(user.fullName)
     const [linkedin, setLinkedIn] = useState(user.linkedin)
     const [company, setCompany] = useState(user.company)
-
     const [fundingStage, setFundingStage] = useState([])
     const [typeOfBusiness, setTypeOfBusiness] = useState([])
     const [industry, setIndustry] = useState([])
     const [location, setLocation] = useState('')
     const [pitch, setPitch] = useState('')
-
-
-
 
     useEffect(() => {
         reset()
@@ -92,14 +73,12 @@ let DialogInvestorProfile = (props) =>{
         }
     }
 
-
     let reset = () => {
         setEmail(user.email)
         setFullName(user.fullName)
         setLinkedIn(user.linkedin)
         setCompany(user.company)
         setLoading(false)
-
         setTypeOfBusiness([])
         setFundingStage([])
         setPitch('')
@@ -108,7 +87,6 @@ let DialogInvestorProfile = (props) =>{
         setLoading(false)
         setFunding([0, 2000000])
         setAllAnswered(false)
-
     }
 
 
@@ -151,7 +129,6 @@ let DialogInvestorProfile = (props) =>{
             newState.location = location
             newState.industry = industry
             newState.funding = funding
-
             obj.typeOfBusiness = typeOfBusiness
             obj.fundingStage = fundingStage
             obj.pitch = pitch 
@@ -162,7 +139,6 @@ let DialogInvestorProfile = (props) =>{
             updateDoc(doc(db, "users", userId), obj)
             .then(() => {
                 setAllAnswered(false)
-                console.log(newState)
                 props.updateUser(newState)
 
                 reset()

@@ -1,9 +1,5 @@
 
 
-
-
-
-
 import React, {Fragment} from 'react'
 
 import PropTypes from 'prop-types';
@@ -11,7 +7,6 @@ import {Link} from 'react-router-dom'
 
 // Redux
 import {connect} from 'react-redux'
-
 
 //MUI
 import Button from '@mui/material/Button';
@@ -39,7 +34,6 @@ import Recommendation from '../../components/investor/Recommendation';
 import DashHead from '../../components/DashHead'
 
 import Startup from '../../images/montreal.jpg'
-
 
 
 let Recommendations = (props) => {
@@ -105,11 +99,12 @@ let Recommendations = (props) => {
 
                                     <Grid 
                                         container
-                                        justifyContent={'center'}
-                                        alignItems="center"
+                                        
                                         sx={{mt: 5}}
                                         spacing={4} 
                                         direction="row"
+                                        justifyContent="center"
+                                        alignItems="flex-start"
                                     
                                     > 
                                         <CardLoading/>
@@ -147,11 +142,11 @@ let Recommendations = (props) => {
 
                                                 <Grid 
                                                     container
-                                                    justifyContent={'center'}
-                                                    alignItems="center"
                                                     sx={{mt: 5}}
                                                     spacing={4} 
                                                     direction="row"
+                                                    justifyContent="center"
+                                                    alignItems="flex-start"
                                                 
                                                 > 
 

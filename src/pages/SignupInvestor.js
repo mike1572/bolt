@@ -1,10 +1,9 @@
 
 import React, {useState, Fragment} from 'react'
-import {Link, useNavigate} from 'react-router-dom';
-import {db, storage, auth} from '../firebaseConfig';
+import {useNavigate} from 'react-router-dom';
+import {db, auth} from '../firebaseConfig';
 import {setDoc, doc} from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from "firebase/auth";
-
 
 //MUI
 import Typography from '@mui/material/Typography'

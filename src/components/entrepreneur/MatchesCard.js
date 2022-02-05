@@ -12,39 +12,17 @@ import {updateChatID} from '../../redux/dataActions'
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ShareIcon from '@mui/icons-material/Share';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Fade from '@mui/material/Fade';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
-import Linked from '@mui/material/Link';
-
 
 let MatchesCard = (props) => {
 
     let navigate = useNavigate()
-    let {data: {user: {fullName, image, matches},userId, chatId}} = props
+    let {data: {user: {image, matches}}} = props
 
-    let matchese = [
-        {
-            fullName:"Elon Musk", 
-            image: image
-        },
-        {
-            fullName:"Elon Musk", 
-            image: image
-        }
-    ]
-
-    
     let handleMatchChat = (event) => {
         let nm = event.target.value
         if (nm !== undefined) {
@@ -52,14 +30,10 @@ let MatchesCard = (props) => {
             navigate('/social')
         }   
 
-
     }
 
-
-
-
     return (
-        <Grid item sx={{mb: 10}} >
+        <Grid item sx={{mb: 2}} >
             <Card  sx={{ backgroundColor: 'primary.main', alignItems: 'center', mx: 'auto', mt: 5, fontSize: 13, minWidth: 300}} raised >
                 <CardHeader
                     title="Your Matches with Investors"
@@ -70,7 +44,11 @@ let MatchesCard = (props) => {
 
 
                 {
-                    matchese.length > 0 ? (
+                    matches.length > 0 ? (
+                        <CardContent sx={{
+                            overflowY: 'scroll',
+                            maxHeight: 500
+                        }}>
                         <Fragment>
                         {   
                             matches.map((element, i) => (
@@ -89,6 +67,7 @@ let MatchesCard = (props) => {
                             ))
                         }
                         </Fragment>
+                        </CardContent>
                     ) : (
                         <Fragment>
                             <Typography sx={{color: 'white', pt: 5, pl: 5}} variant="h6">
@@ -97,7 +76,7 @@ let MatchesCard = (props) => {
                             <Button variant='outlined' sx={{backgroundColor: 'primary.main', m: 5, color: 'white', border: 'solid 1px white'}}
                                 component={Link} to="/resources"
                             >
-                                View Ressources
+                                View Resources
                             </Button>
                         </Fragment>
                     )
@@ -123,10 +102,4 @@ const mapActionsToProps = {
 }
 
 export default connect(mapStateToProps, mapActionsToProps) (MatchesCard);
-
-
-
-
-
-
 

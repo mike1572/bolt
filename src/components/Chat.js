@@ -1,14 +1,14 @@
 
 
-
-import React, { useRef, useState, Fragment, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import Message from './Message'
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom'
 
-import {db, storage, auth} from '../firebaseConfig';
-import {setDoc, doc, updateDoc, deleteField, onSnapshot, getDoc, arrayUnion  } from 'firebase/firestore';
+import {db} from '../firebaseConfig';
+import {setDoc, doc, updateDoc, onSnapshot, getDoc, arrayUnion  } from 'firebase/firestore';
 
-
+//Redux
 import {connect} from 'react-redux'
 
 //MUI
@@ -17,14 +17,7 @@ import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid'
-import CardHeader from '@mui/material/Card'
 import Avatar from '@mui/material/Avatar'
-import Card from '@mui/material/Card'
-
-import image from '../images/job.jpg'
-import { borderBottom } from '@mui/system';
-
-
 
 
 let Chat = (props) => {
@@ -38,10 +31,9 @@ let Chat = (props) => {
     useEffect(() => {
         setList([])
         scrollToBottom()
-        console.log(matches)
         if (chatId !== null){
             setRecipient(matches.filter(match => match.id === chatId)[0])
-            console.log(matches)
+            
         }
 
     }, [chatId])
@@ -50,7 +42,7 @@ let Chat = (props) => {
 
     let scrollToBottom = () => {
         
-        if (chatRef.current !== undefined){
+        if (chatRef.current !== undefined && chatRef.current !== null){
             chatRef.current.scrollIntoView({
                 behavior: "smooth",
                 block: "nearest",
@@ -91,24 +83,12 @@ let Chat = (props) => {
 
     }, [chatId])
 
-    // let list = [
-    //     {
-    //         id: "1CJYxCxKQFOIkzrooamhVZSlI7U2", 
-    //         msg: "i love u"
-    //     }, 
-    //     {
-    //         id: "i44k4mkr", 
-    //         msg: "i love u"
-    //     }
-    // ]
 
     let handleSend = (event) => {
         event.preventDefault()
-      
         if (message !== ''){
             addMesg()
-        }
-       
+        }       
     }
 
     let addMesg = async() => {
@@ -150,16 +130,6 @@ let Chat = (props) => {
         setMessage('')
     }
 
-    let handleGoBack = () => {
-
-
-    }
-
-
-    let viewFullProfile = () => {
-
-    }
-
     if (chatId !== null){
         return(
             <Grid item sx={{mb: 10, mt: 3}} >
@@ -167,7 +137,7 @@ let Chat = (props) => {
                     
                     <Paper elevation={2}>
                         <Button variant='contained' sx={{width: '100%'}}
-                            onClick={viewFullProfile}
+                            component={Link} to="/profile"
                         >
                             View Full Profile
                         </Button>

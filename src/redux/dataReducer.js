@@ -18,7 +18,11 @@ import {
     SET_CHAT_ID,
 
     SET_MATCHES, 
-    ADD_MATCH
+    ADD_MATCH, 
+
+    RESET_STATE,
+
+    SET_BUSINESSES_OF_PROFILE_WANTED
 } from './types';
 
 
@@ -33,13 +37,36 @@ const initialState = {
     deleteBusiness: false,
     businessToBeDeleted: null, 
     recommendations: [], 
-    loadingRecommendations: false
+    loadingRecommendations: false, 
+    businessesOfProfileWanted: []
 }
 
 
 export default function(state = initialState, action) {
     switch(action.type){
 
+        case SET_BUSINESSES_OF_PROFILE_WANTED: {
+            return {
+                ...state, 
+                businessesOfProfileWanted: action.payload
+            }
+        }
+        case RESET_STATE: {
+            return {
+                authenticated: false,
+                type: null, 
+                user: {},
+                userId: null,
+                editProfile: false,
+                chatId: null, 
+                addBusiness: false, 
+                deleteBusiness: false,
+                businessToBeDeleted: null, 
+                recommendations: [], 
+                loadingRecommendations: false,
+                businessesOfProfileWanted: []
+            }
+        }
         case ADD_MATCH: {
             return {
                 ...state, 

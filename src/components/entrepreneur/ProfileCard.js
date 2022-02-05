@@ -12,31 +12,19 @@ import {addBusiness} from '../../redux/dataActions'
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ShareIcon from '@mui/icons-material/Share';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Fade from '@mui/material/Fade';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import Linked from '@mui/material/Link';
-
 
 import DialogAddBusiness from '../../components/entrepreneur/DialogAddBusiness'
 
 let ProfileCard = (props) => {
 
-
-
-
-    let {data: {user: {fullName, image, businesses, type}}} = props
-
+    let {data: {user: {fullName, image, businesses}}} = props
 
     let handleAdd = () => {
         props.addBusiness(true)
@@ -56,7 +44,7 @@ let ProfileCard = (props) => {
                         <Button sx={{textTransform: 'none'}} component={Link} to="/profile/entrepreneur"> 
                             <CardHeader
                                 sx={{maxWidth: 300, color: 'white'}}
-                                title={`Personal Profile`}
+                                title={<b>Personal Profile</b>}
                                 titleTypographyProps={{variant:'h6' }}
                                 avatar={
                                     <Avatar src={image} sx={{ width: 56, height: 56, mr: 2, ml: 2 }} aria-label="profile picture"/>
@@ -80,7 +68,7 @@ let ProfileCard = (props) => {
                                                     <Button sx={{textTransform: 'none'}} component={Link} to="/profile/entrepreneur"> 
                                                         <CardHeader
                                                             sx={{maxWidth: 300, color: 'white'}}
-                                                            title={`Business Profile`}
+                                                            title={<b>Business Profile</b>}
                                                             titleTypographyProps={{variant:'h6' }}
                                                             avatar={
                                                                 <Avatar src={business.image} sx={{ width: 56, height: 56, mr: 2, ml: 2 }} aria-label="profile picture"/>
@@ -132,12 +120,5 @@ const mapActionsToProps = {
 }
 
 export default connect(mapStateToProps, mapActionsToProps) (ProfileCard);
-
-
-
-
-
-
-
 
 

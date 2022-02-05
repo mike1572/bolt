@@ -1,14 +1,14 @@
 
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {db, storage, auth} from '../../firebaseConfig';
-import {setDoc, doc, updateDoc, deleteField  } from 'firebase/firestore';
-
+import {db} from '../../firebaseConfig';
+import {doc, updateDoc, deleteField  } from 'firebase/firestore';
 
 // Redux
 import {connect} from 'react-redux'
 import {editProfilePersonal , updateUser} from '../../redux/dataActions';
 
+//MUI
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -25,7 +25,6 @@ let DialogPersonalProfile = (props) =>{
     const {data: {editProfile, user, userId}} = props
 
     const [loading, setLoading] = useState(false)
-
     const [email, setEmail] = useState(user.email)
     const [fullname, setFullName] = useState(user.fullName)
     const [linkedin, setLinkedIn] = useState(user.linkedin)

@@ -25,9 +25,6 @@ import ReviewsIcon from '@mui/icons-material/Reviews';
 import {connect} from 'react-redux'
 import {logoutUser, setRecommendations} from '../redux/dataActions'
 
-import Lynked from '../images/lynked.png'
-
-
 // Hook
 let useWindowSize = () => {
     const [windowSize, setWindowSize] = useState({
@@ -49,11 +46,7 @@ let useWindowSize = () => {
 }
 
 
-
-
 let Header = (props) => {
-
-  
 
   const size = useWindowSize()
 
@@ -64,7 +57,6 @@ let Header = (props) => {
   let refreshRecommendations = () => {
     props.setRecommendations(props.user)
   }
-
 
 
   let navbar;
