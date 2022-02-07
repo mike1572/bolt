@@ -12,7 +12,7 @@ A demo of this project can be found [here](https://bolt-b9576.web.app/).
 This project assumes that you already have `Node ^14.17.6` & `npm ^6.14.15`. If you do not, please download them from [the official website](https://nodejs.org/en/download/)
 Here are a couple of steps that you can follow to quickly get started with the project.
 
-1. Clone the repository: `git clone https://github.com/mike1572/face.git`
+1. Clone the repository: `git clone https://github.com/mike1572/bolt.git`
 2. Install the project dependencies by running `npm install` inside the cloned directory
 3. Run `npm start` to start your own local development environment! Alternatively, here are some more commands available:
 
